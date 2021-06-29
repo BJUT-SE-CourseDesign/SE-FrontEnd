@@ -1,15 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <Welcome msg="Welcome to Your Vue.js App" />
+  <ToolBar />
+  <library-hierarchy />
 </template>
 
 <script>
-import Welcome from "./components/HelloWorld.vue";
+import ToolBar from "./components/ToolBar.vue";
+import LibraryHierarchy from "./components/LibraryHierarchy.vue";
 
 export default {
   name: "App",
   components: {
-    Welcome,
+    ToolBar,
+    LibraryHierarchy,
   },
 };
 </script>

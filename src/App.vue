@@ -1,14 +1,19 @@
 <template>
-  <Welcome msg="Welcome to Your Vue.js App" />
+  <MenuBar />
+  <ToolBar />
+  <LibraryHierarchy />
 </template>
 
 <script>
-import Welcome from "./components/MenuBar.vue";
+// import MenuBar from "./components/MenuBar.vue";
+import ToolBar from "./components/ToolBar.vue";
+import LibraryHierarchy from "./components/LibraryHierarchy.vue";
 
 export default {
   name: "App",
   components: {
-    Welcome,
+    ToolBar,
+    LibraryHierarchy,
   },
 };
 </script>

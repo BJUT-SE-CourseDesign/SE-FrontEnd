@@ -1,19 +1,19 @@
 <template>
   <MenuBar />
   <ToolBar />
+  <UploadFrame />
   <LibraryHierarchy />
 </template>
 
 <script>
-// import MenuBar from "./components/MenuBar.vue";
 import ToolBar from "./components/ToolBar.vue";
-import LibraryHierarchy from "./components/LibraryHierarchy.vue";
+import UploadFrame from "./components/UploadFrame.vue";
 
 export default {
   name: "App",
   components: {
+    UploadFrame,
     ToolBar,
-    LibraryHierarchy,
   },
 };
 </script>

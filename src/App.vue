@@ -1,29 +1,26 @@
 <template>
-  <MenuBar />
-  <ToolBar />
   <LibraryHierarchy />
+  <PapersManagement />
 </template>
 
 <script>
-// import MenuBar from "./components/MenuBar.vue";
-import ToolBar from "./components/ToolBar.vue";
-import LibraryHierarchy from "./components/LibraryHierarchy.vue";
+import PapersManagement from "./pages/PapersManagement.vue";
+
 
 export default {
   name: "App",
   components: {
-    ToolBar,
-    LibraryHierarchy,
+    PapersManagement,
   },
 };
 </script>
+
 
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }

@@ -54,6 +54,7 @@
         帮助
       </div>
     </div>
+    <div style="flex: 1"></div>
     <div class="el-search">
       <div class="demo-input-suffix">
         <el-input
@@ -74,9 +75,7 @@
 <script>
 export default {
   methods: {
-    handleClick() {
-      alert("button click");
-    },
+    addFile() {},
   },
 };
 </script>

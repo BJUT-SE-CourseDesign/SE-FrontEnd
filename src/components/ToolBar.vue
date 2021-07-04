@@ -75,9 +75,7 @@
 <script>
 export default {
   methods: {
-    handleClick() {
-      alert("button click");
-    },
+    addFile() {},
   },
 };
 </script>

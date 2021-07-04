@@ -6,8 +6,8 @@
     <TabsBar />
     <div class="main">
       <LibraryHierarchy />
-      <PapersContainer />
-      <PaperReader />
+      <PapersContainer v-if="tabIndex === '0'" />
+      <PaperReader v-else />
       <UploadFrame />
     </div>
     <div></div>
@@ -31,8 +31,11 @@ export default {
     LibraryHierarchy,
     PapersContainer,
   },
-  data() {
-    return {};
+  data() {},
+  computed: {
+    tabIndex() {
+      return this.$store.state.tabIndex;
+    },
   },
 };
 </script>

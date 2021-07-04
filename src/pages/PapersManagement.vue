@@ -1,13 +1,16 @@
 <template>
-  <div class="root">
+  <div class="PaperManagement">
     <div class="children-ToolBar">
       <ToolBar />
     </div>
+    <TabsBar />
     <div class="main">
       <LibraryHierarchy />
       <PapersContainer />
+      <PaperReader />
       <UploadFrame />
     </div>
+    <div></div>
   </div>
 </template>
 
@@ -16,10 +19,14 @@
 import ToolBar from "../components/ToolBar.vue";
 import LibraryHierarchy from "../components/LibraryHierarchy.vue";
 import PapersContainer from "../components/PapersContainer.vue";
+import TabsBar from "../components/TabsBar.vue";
+import PaperReader from "../components/PaperReader.vue";
 
 export default {
   name: "PapersManagement",
   components: {
+    PaperReader,
+    TabsBar,
     ToolBar,
     LibraryHierarchy,
     PapersContainer,
@@ -37,15 +44,17 @@ export default {
   margin-bottom: 20px;
 }
 
-.root {
+.PaperManagement {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
-.root .main {
+.PaperManagement .main {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
+  height: 100%;
 }
 </style>

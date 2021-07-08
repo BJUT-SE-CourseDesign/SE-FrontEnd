@@ -1,4 +1,12 @@
 <template>
+  <input
+    ref="uploadButton"
+    type="file"
+    hidden
+    accept=".pdf"
+    @change="uploadFile"
+    multiple
+  />
   <el-row>
     <div class="el-bar">
       <div class="el-upload__tip">
@@ -7,6 +15,7 @@
             type="success"
             icon="el-icon-document-add"
             size="small"
+            @click="addFile"
           ></el-button>
           <el-button
             type="danger"
@@ -75,7 +84,12 @@
 <script>
 export default {
   methods: {
-    addFile() {},
+    addFile: function () {
+      this.$refs.uploadButton.click();
+    },
+    uploadFile(event) {
+      console.log(event);
+    },
   },
 };
 </script>

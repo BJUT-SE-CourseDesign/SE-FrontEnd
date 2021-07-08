@@ -3,8 +3,8 @@ import { createStore } from "vuex";
 export default createStore({
     state() {
         return {
-            openedPdf: "",
-            openedTabs: ['我的文献库']
+            tabIndex: "0",
+            openedTabs: ['我的文献库', "测试文件"]
         }
     },
     mutations: {
@@ -14,6 +14,11 @@ export default createStore({
         removeTab: (state, index) => {
             if (index !== 0) {
                 state.openedTabs.splice(index, 1);
+            }
+        },
+        switchTab: (state, index) => {
+            if (index >= 0 && index < state.openedTabs.length) {
+                state.tabIndex = index + '';
             }
         }
     },

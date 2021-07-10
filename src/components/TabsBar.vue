@@ -28,7 +28,7 @@ export default {
       return this.$store.state.openedTabs;
     },
     tabIndex() {
-      return this.$store.state.tabIndex;
+      return "" + this.$store.state.tabIndex;
     },
   },
   methods: {

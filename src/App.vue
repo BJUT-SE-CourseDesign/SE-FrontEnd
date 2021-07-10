@@ -5,10 +5,10 @@
     </div>
     <TabsBar />
     <div class="main">
-      <LibraryHierarchy v-if="tabIndex === '0'" />
-      <PapersContainer v-if="tabIndex === '0'" />
-      <PaperReader v-else />
-      <UploadFrame />
+      <LibraryHierarchy v-if="tabIndex === 0" />
+      <PapersContainer v-if="tabIndex === 0" class="center" />
+      <PaperReader v-else class="center" />
+      <PaperDetail />
     </div>
     <div></div>
   </div>
@@ -21,6 +21,7 @@ import LibraryHierarchy from "./components/LibraryHierarchy.vue";
 import PapersContainer from "./components/PapersContainer.vue";
 import TabsBar from "./components/TabsBar.vue";
 import PaperReader from "./components/PaperReader.vue";
+import PaperDetail from "./components/PaperDetail.vue";
 export default {
   name: "App",
   components: {
@@ -29,6 +30,7 @@ export default {
     ToolBar,
     LibraryHierarchy,
     PapersContainer,
+    PaperDetail,
   },
   data() {
     return {};
@@ -58,5 +60,9 @@ export default {
   align-items: flex-start;
   justify-content: flex-start;
   height: 100%;
+}
+
+.center {
+  flex: 1;
 }
 </style>

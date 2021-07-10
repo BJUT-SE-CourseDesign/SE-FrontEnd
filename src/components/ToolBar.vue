@@ -83,6 +83,7 @@
 
 <script>
 export default {
+  name: "ToolBar",
   methods: {
     addFile: function () {
       this.$refs.uploadButton.click();

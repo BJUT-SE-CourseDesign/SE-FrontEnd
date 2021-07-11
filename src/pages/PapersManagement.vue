@@ -7,6 +7,7 @@
       <LibraryHierarchy />
       <PapersContainer />
       <UploadFrame />
+      <LogIn />
     </div>
   </div>
 </template>
@@ -16,6 +17,7 @@
 import ToolBar from "../components/ToolBar.vue";
 import LibraryHierarchy from "../components/LibraryHierarchy.vue";
 import PapersContainer from "../components/PapersContainer.vue";
+import LogIn from "../components/LogIn.vue";
 
 export default {
   name: "PapersManagement",
@@ -23,6 +25,7 @@ export default {
     ToolBar,
     LibraryHierarchy,
     PapersContainer,
+    LogIn
   },
   data() {
     return {};

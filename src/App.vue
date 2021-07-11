@@ -9,6 +9,7 @@
       <PapersContainer v-if="tabIndex === 0" class="center" />
       <PaperReader v-else class="center" />
       <PaperDetail />
+      <ChangePassword />
     </div>
     <div></div>
   </div>
@@ -22,9 +23,12 @@ import PapersContainer from "./components/PapersContainer.vue";
 import TabsBar from "./components/TabsBar.vue";
 import PaperReader from "./components/PaperReader.vue";
 import PaperDetail from "./components/PaperDetail.vue";
+import ChangePassword from "./components/ChangePassword.vue";
+
 export default {
   name: "App",
   components: {
+    ChangePassword,
     PaperReader,
     TabsBar,
     ToolBar,

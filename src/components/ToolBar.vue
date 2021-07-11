@@ -1,4 +1,12 @@
 <template>
+  <input
+    ref="uploadButton"
+    type="file"
+    hidden
+    accept=".pdf"
+    @change="uploadFile"
+    multiple
+  />
   <el-row>
     <div class="el-bar">
       <div class="el-upload__tip">
@@ -7,6 +15,7 @@
             type="success"
             icon="el-icon-document-add"
             size="small"
+            @click="addFile"
           ></el-button>
           <el-button
             type="danger"
@@ -54,6 +63,7 @@
         帮助
       </div>
     </div>
+    <div style="flex: 1"></div>
     <div class="el-search">
       <div class="demo-input-suffix">
         <el-input
@@ -73,9 +83,13 @@
 
 <script>
 export default {
+  name: "ToolBar",
   methods: {
-    handleClick() {
-      alert("button click");
+    addFile: function () {
+      this.$refs.uploadButton.click();
+    },
+    uploadFile(event) {
+      console.log(event);
     },
   },
 };

@@ -22,9 +22,10 @@ const filterOptions = [
 export default createStore({
     state() {
         return {
+            pageRouter: 0,
             tabIndex: 0,
             openedTabs: ['我的文献库', "测试文件"],
-            filterIndex: 0
+            filterIndex: 0,
         }
     },
     getters: {

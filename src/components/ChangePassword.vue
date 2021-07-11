@@ -6,19 +6,23 @@
         placeholder="旧密码"
         prefix-icon="el-icon-lock"
         v-model="input1"
+        show-password
+        style="margin-bottom: 2vh"
       >
       </el-input>
       <el-input
         placeholder="新密码"
         prefix-icon="el-icon-lock"
         v-model="input2"
+        show-password
+        style="margin-bottom: 2vh"
       >
-        <div></div>
       </el-input>
       <el-input
-        placeholder="重复密码"
+        placeholder="确认密码"
         prefix-icon="el-icon-lock"
         v-model="input3"
+        show-password
       >
       </el-input>
     </div>
@@ -30,9 +34,9 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import {ref } from "vue";
 
-export default defineComponent({
+export default {
   setup() {
     return {
       input1: ref(""),
@@ -40,7 +44,7 @@ export default defineComponent({
       input3: ref(""),
     };
   },
-});
+};
 </script>
 
 <style>

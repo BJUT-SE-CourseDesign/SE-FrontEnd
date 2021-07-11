@@ -1,39 +1,27 @@
 <template>
-  <div class="login-part">
-    <div class="text">
-      <div class="title">论文通</div>
-      <div class="subtitle">您的一站式论文管理系统</div>
+  <div class="login-page">
+    <div class="decorate">
+      <el-image class="random-image" :src="url" :fit="fit"></el-image>
     </div>
-    <div class="input-div">
-      <el-input
-        placeholder="用户名"
-        prefix-icon="el-icon-user"
-        v-model="input1"
-      >
-      </el-input>
-      <el-input
-        placeholder="密码"
-        prefix-icon="el-icon-lock"
-        v-model="input2"
-        show-password
-      >
-      </el-input>
-    </div>
-    <el-row>
-      <el-button type="primary">登录</el-button>
-      <el-button type="primary">注册</el-button>
-    </el-row>
+    <LogIn />
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
+// import ChangePassward from "../components/ChangePassword.vue";
+import LogIn from "../components/LogIn.vue";
 
 export default defineComponent({
-  setup() {
+  components: {
+    // ChangePassward,
+    LogIn,
+  },
+  data() {
+    const timeSeed = new Date().getTime();
+    let url = `https://picsum.photos/seed/${timeSeed}/536/354`;
     return {
-      input1: ref(""),
-      input2: ref(""),
+      url,
     };
   },
 });

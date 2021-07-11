@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-tabs type="border-card">
+  <div class="paper-detail">
+    <el-tabs type="border-card" style="height: 100%">
       <el-tab-pane
         v-for="tab in detailTabs"
         :label="tab"
@@ -25,4 +25,7 @@ export default {
 </script>
 
 <style scoped>
+.paper-detail {
+  height: 100%;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tabs-bar">
     <el-tabs
       v-model="tabIndex"
       type="card"

@@ -1,22 +1,13 @@
 <template>
   <div class="root">
-    <div class="el-paper">
-      <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
-        <el-radio-button :label="false" size="small">展开</el-radio-button>
-        <el-radio-button :label="true" size="small">收起</el-radio-button>
-      </el-radio-group>
+    <div class="el-paper hierarchy">
       <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
-        :collapse="isCollapse"
       >
-        <el-submenu>
-          <template #title>
-            <span>论文库</span>
-          </template>
-        </el-submenu>
+        <h3>论文库</h3>
         <el-menu-item index="2">
           <i class="el-icon-takeaway-box"></i>
           <template #title>所有文档</template>
@@ -35,20 +26,16 @@
         </el-menu-item>
       </el-menu>
     </div>
-    <div class="el-filter">
-      <el-dropdown>
-        <span class="el-dropdown-link">
-          过滤器<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>关键词</el-dropdown-item>
-            <el-dropdown-item>作者</el-dropdown-item>
-            <el-dropdown-item>标记词</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </div>
+
+    <el-select v-model="filterValue" @change="changeFilterValue">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      >
+      </el-option>
+    </el-select>
   </div>
 </template>
 
@@ -59,8 +46,18 @@ export default {
   components: {},
   data() {
     return {
-      isCollapse: true,
+      options: this.$store.getters.allFilterValues,
     };
+  },
+  computed: {
+    filterValue() {
+      return this.$store.getters.filterValue.label;
+    },
+  },
+  methods: {
+    changeFilterValue(index) {
+      this.$store.commit("changeFilterValue", index);
+    },
   },
 };
 </script>
@@ -70,5 +67,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.hierarchy {
+  width: 100%;
 }
 </style>

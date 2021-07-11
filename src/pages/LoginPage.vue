@@ -40,49 +40,6 @@ export default defineComponent({
   transform: translateX(-50%) translateY(-30%);
 }
 
-.login-part {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.login-part .title {
-  font-size: 80px;
-  font-family: STKaiti;
-  font-weight: bold;
-  letter-spacing: 12px;
-  margin: 0 20px 20px 0;
-  text-align: left;
-}
-
-.login-part .subtitle {
-  margin: 0 20px 20px 20px;
-  text-align: right;
-  width: 100%;
-  font-size: 20px;
-}
-
-.el-input {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.input-div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin: 0 0 50px 0;
-}
-
-.text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .random-image {
   border-radius: 8px;
   box-shadow: 0 13px 27px -5px hsl(240deg 30% 28% / 25%),

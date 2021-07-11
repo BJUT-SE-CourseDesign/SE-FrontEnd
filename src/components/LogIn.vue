@@ -20,7 +20,7 @@
       </el-input>
     </div>
     <el-row>
-      <el-button type="primary">登录</el-button>
+      <el-button type="primary" @click="login">登录</el-button>
       <el-button type="primary">注册</el-button>
     </el-row>
   </div>
@@ -36,22 +36,15 @@ export default defineComponent({
       input2: ref(""),
     };
   },
+  methods: {
+    login() {
+      this.$store.commit("changeRouter", 1);
+    },
+  },
 });
 </script>
 
 <style>
-.login-page {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  transform: translateX(-50%) translateY(-30%);
-}
-
 .login-part {
   display: flex;
   flex-direction: column;
@@ -93,15 +86,5 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.random-image {
-  border-radius: 8px;
-  box-shadow: 0 13px 27px -5px hsl(240deg 30% 28% / 25%),
-    0 8px 16px -8px hsl(0deg 0% 0% / 30%), 0 -6px 16px -6px hsl(0deg 0% 0% / 3%);
-}
-
-.decorate {
-  margin-right: 60px;
 }
 </style>

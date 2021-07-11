@@ -3,7 +3,7 @@
     ref="uploadButton"
     type="file"
     hidden
-    accept=".pdf"
+    accept=".pdf,.docx,.pptx,.xlsx"
     @change="uploadFile"
     multiple
   />
@@ -15,7 +15,7 @@
             type="success"
             icon="el-icon-document-add"
             size="small"
-            @click="addFile"
+            @click="mockUploadFile"
           ></el-button>
           <el-button
             type="danger"
@@ -85,11 +85,15 @@
 export default {
   name: "ToolBar",
   methods: {
-    addFile: function () {
+    mockUploadFile: function () {
       this.$refs.uploadButton.click();
     },
-    uploadFile(event) {
-      console.log(event);
+    uploadFile() {
+      const fileObj = this.$refs.uploadButton.files[0];
+      let fileName = fileObj.name.split(".");
+      const fileType = fileName[fileName.length - 1];
+      fileName = fileName.slice(0, fileName.length - 1).join("");
+      this.$store.commit("addFileObj", { fileObj, fileName, fileType });
     },
   },
 };

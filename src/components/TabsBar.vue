@@ -7,8 +7,8 @@
       @tab-click="switchTab"
     >
       <el-tab-pane
-        :key="item.name"
         v-for="(item, index) in tabs"
+        :key="item"
         :closable="index !== 0"
         :label="item"
         :name="'' + index"

@@ -141,6 +141,8 @@ export function downloadFile(data) {
     }).then(res => {
         console.log(res);
     });
+
+    
 }
 
 // export function deleteFolder(data) {

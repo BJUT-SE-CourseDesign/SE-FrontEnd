@@ -24,6 +24,8 @@ export default {
   },
   methods: {
     loadPDF(instance) {
+      console.log("hi");
+      console.log(this.$store.state);
       const tabIndex = this.$store.state.tabIndex;
       const file = this.$store.state.fileObjs[tabIndex];
       instance.loadDocument(file, { filename: file.name });

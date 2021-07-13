@@ -1,34 +1,35 @@
 const axios = require("axios").default;
-const host = "http://se.renjikai.com:8000/";
+axios.defaults.withCredentials = true;
+const host = "https://se1.renjikai.com/";
 
 
-export function userRegister(data) {
+export function userRegister(data, callback) {
     const url = host + "users/register";
     axios.post(url, {
         'username': data.username,
         'password': data.password,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
-export function userLogin(data) {
+export function userLogin(data, callback) {
     const url = host + "users/login";
     axios.post(url, {
         'username': data.username,
         'password': data.password,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
-export function modifyPassword(data) {
+export function modifyPassword(data, callback) {
     const url = host + "users/modifypassword";
     axios.post(url, {
-        'newpassword': data.newpassword,
-        'oldpassword': data.oldpassword,
+        'newPassword': data.newPassword,
+        'oldPassword': data.oldPassword,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

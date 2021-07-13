@@ -64,7 +64,9 @@ function loadPDFFile(instance, file) {
 export default createStore({
     state() {
         return {
+            username: "如果这里是吴天鹤那么一定出错了",
             pageRouter: 0,
+            logOrChange: true,
             tabIndex: 0,
             openedTabs: ['我的文献库'],
             filterIndex: 0,
@@ -83,6 +85,9 @@ export default createStore({
         }
     },
     mutations: {
+        changeUsername: (state, name) => {
+            state.username = name;
+        },
         changeRouter: (state, router) => {
             router = parseInt(router);
             if (router >= 0 && router <= 1) {
@@ -128,6 +133,9 @@ export default createStore({
             const tabIndex = state.tabIndex;
             const file = state.fileObjs[tabIndex];
             loadPDFFile(state.pdfInstance, file);
+        },
+        switchLogOrChange: (state, target) => {
+            state.logOrChange = target;
         }
     },
 });

@@ -8,37 +8,80 @@
       <el-input
         placeholder="用户名"
         prefix-icon="el-icon-user"
-        v-model="input1"
+        v-model="username"
       >
       </el-input>
       <el-input
         placeholder="密码"
         prefix-icon="el-icon-lock"
-        v-model="input2"
+        v-model="password"
         show-password
       >
       </el-input>
+      <div v-if="error" class="error">{{ failWords }}</div>
+      <div v-if="registerFlag" class="success">注册成功！</div>
     </div>
     <el-row>
       <el-button type="primary" @click="login">登录</el-button>
-      <el-button type="primary">注册</el-button>
+      <el-button type="primary" @click="register">注册</el-button>
     </el-row>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
+import { userLogin, userRegister } from "../net/network";
 
 export default defineComponent({
   setup() {
     return {
-      input1: ref(""),
-      input2: ref(""),
+      username: ref(""),
+      password: ref(""),
+    };
+  },
+  data() {
+    return {
+      error: false,
+      registerFlag: false,
+      failWords: "",
     };
   },
   methods: {
     login() {
-      this.$store.commit("changeRouter", 1);
+      userLogin(
+        {
+          username: this.username,
+          password: this.password,
+        },
+        (res) => {
+          if (res.data.status === 200) {
+            this.$store.commit("changeRouter", 1);
+            this.$store.commit("changeUsername", this.username);
+          } else {
+            this.error = true;
+            this.registerFlag = false;
+            this.failWords = "账号或密码错误！";
+          }
+        }
+      );
+    },
+    register() {
+      userRegister(
+        {
+          username: this.username,
+          password: this.password,
+        },
+        (res) => {
+          if (res.data.status === 200) {
+            this.error = false;
+            this.registerFlag = true;
+          } else {
+            this.error = true;
+            this.registerFlag = false;
+            this.failWords = "该账号已存在！";
+          }
+        }
+      );
     },
   },
 });
@@ -86,5 +129,13 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="el-change">
     <div class="text">修改密码</div>
-    <div class="el-input_passward">
+    <div class="el-input_password">
       <el-input
         placeholder="旧密码"
         prefix-icon="el-icon-lock"
@@ -60,7 +60,7 @@ export default {
   align-items: center;
 }
 
-.el-input_passward {
+.el-input_password {
   display: flex;
   flex-direction: column;
   align-items: center;

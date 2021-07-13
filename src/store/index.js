@@ -72,7 +72,10 @@ export default createStore({
             filterIndex: 0,
             fileObjs: [null],
             fileTables: [],
-            pdfInstance: null
+            pdfInstance: null,
+            foldersList: [],
+            onNewFolder: false,
+            onNewFolderCallBack: null,
         }
     },
     getters: {
@@ -136,6 +139,18 @@ export default createStore({
         },
         switchLogOrChange: (state, target) => {
             state.logOrChange = target;
+        },
+        getAllFolders: (state, foldersList) => {
+            state.foldersList = foldersList;
+        },
+        switchOnNewFolder: (state, onOrOff) => {
+            if (onOrOff) {
+                setTimeout(state.onNewFolderCallBack, 100);
+            }
+            state.onNewFolder = onOrOff;
+        },
+        setOnNewFolderCallBack: (state, callback) => {
+            state.onNewFolderCallBack = callback;
         }
     },
 });

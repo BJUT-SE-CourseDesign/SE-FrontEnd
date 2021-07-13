@@ -32,6 +32,7 @@
             type="success"
             icon="el-icon-folder-add"
             size="small"
+            @click="newFolder"
           ></el-button>
           <el-button
             type="danger"
@@ -131,6 +132,9 @@ export default {
     toChangePassword() {
       this.$store.commit("changeRouter", 0);
       this.$store.commit("switchLogOrChange", false);
+    },
+    newFolder() {
+      this.$store.commit("switchOnNewFolder", true);
     },
   },
   computed: {

@@ -26,9 +26,25 @@
           <i class="el-icon-timer"></i>
           <template #title>最近添加</template>
         </el-menu-item>
-        <el-menu-item index="5">
+        <el-menu-item
+          v-for="(folder, index) in allFolders"
+          :key="folder.FID"
+          :index="index + 5 + ''"
+        >
           <i class="el-icon-user"></i>
-          <template #title>用户自定义</template>
+          <template #title>{{ folder.folderName }}</template>
+        </el-menu-item>
+        <el-menu-item>
+          <input
+            v-show="onNewFolder"
+            v-model="newFolderName"
+            placeholder="请输入内容"
+            @blur="newFolderBlur"
+            @focus="focusNewFolderInput"
+            ref="newFolderInput"
+            class="newFolderInput"
+          />
+          <div v-show="!onNewFolder" @click="newFolder">新建文件夹...</div>
         </el-menu-item>
       </el-menu>
     </div>
@@ -47,22 +63,66 @@
 
 
 <script>
+import { addFolder, getFolderList } from "../net/network";
+
 export default {
   name: "LibraryHierarchy",
   components: {},
+  created() {
+    this.$store.commit("setOnNewFolderCallBack", () => {
+      this.$refs.newFolderInput.focus();
+    });
+  },
   data() {
     return {
       options: this.$store.getters.allFilterValues,
+      newFolderName: "未命名文件夹",
     };
   },
   computed: {
     filterValue() {
       return this.$store.getters.filterValue.label;
     },
+    allFolders() {
+      return this.$store.state.foldersList;
+    },
+    onNewFolder() {
+      return this.$store.state.onNewFolder;
+    },
   },
   methods: {
     changeFilterValue(index) {
       this.$store.commit("changeFilterValue", index);
+    },
+    newFolder() {
+      this.$store.commit("switchOnNewFolder", true);
+    },
+    newFolderBlur() {
+      if (
+        this.newFolderName !== "未命名文件夹" &&
+        this.newFolderName.length > 0
+      ) {
+        addFolder(
+          {
+            folderName: this.newFolderName,
+            shared: false,
+          },
+          (res) => {
+            if (res.data.status === 200) {
+              getFolderList((res) => {
+                if (res.data.status === 200) {
+                  this.$store.commit("getAllFolders", res.data.folder_list);
+                }
+              });
+            }
+          }
+        );
+      }
+      this.$store.commit("switchOnNewFolder", false);
+      this.newFolderName = "未命名文件夹";
+    },
+    focusNewFolderInput() {
+      this.$refs.newFolderInput.select();
     },
   },
 };
@@ -77,5 +137,10 @@ export default {
 
 .hierarchy {
   width: 100%;
+}
+
+.newFolderInput {
+  border-width: 0;
+  height: 30px;
 }
 </style>

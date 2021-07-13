@@ -3,19 +3,20 @@
     <div class="decorate">
       <el-image class="random-image" :src="url" :fit="fit"></el-image>
     </div>
-    <LogIn />
+    <LogIn v-if="logOrChange" />
+    <ChangePassword v-else />
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-// import ChangePassward from "../components/ChangePassword.vue";
 import LogIn from "../components/LogIn.vue";
+import ChangePassword from "../components/ChangePassword.vue";
 
 export default defineComponent({
   components: {
-    // ChangePassward,
     LogIn,
+    ChangePassword,
   },
   data() {
     const timeSeed = new Date().getTime();
@@ -23,6 +24,11 @@ export default defineComponent({
     return {
       url,
     };
+  },
+  computed: {
+    logOrChange() {
+      return this.$store.state.logOrChange;
+    },
   },
 });
 </script>

@@ -81,10 +81,24 @@
         </el-input>
       </div>
     </div>
-    <div class="el-user">
-      天鹤
-      <i class="el-icon-user-solid"></i>
-    </div>
+
+    <el-dropdown>
+      <div class="el-user">
+        <i class="el-icon-user-solid"></i>
+        {{ username }}
+        <i :class="arrow"></i>
+      </div>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item @click="toChangePassword"
+            ><i class="el-icon-key"></i>修改密码</el-dropdown-item
+          >
+          <el-dropdown-item @click="logOut"
+            ><i class="el-icon-circle-close"></i>账号注销</el-dropdown-item
+          >
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </el-row>
 </template>
 
@@ -93,6 +107,11 @@ import { userRegister } from "../net/network";
 
 export default {
   name: "ToolBar",
+  data() {
+    return {
+      arrow: "el-icon-arrow-down",
+    };
+  },
   methods: {
     mockUploadFile: function () {
       this.$refs.uploadButton.click();
@@ -106,10 +125,19 @@ export default {
     },
     apiTest() {
       console.log("api test start");
-      userRegister({
-        username: "test",
-        password: "12345678",
-      });
+    },
+    logOut() {
+      this.$store.commit("changeRouter", 0);
+      this.$store.commit("switchLogOrChange", true);
+    },
+    toChangePassword() {
+      this.$store.commit("changeRouter", 0);
+      this.$store.commit("switchLogOrChange", false);
+    },
+  },
+  computed: {
+    username() {
+      return this.$store.state.username;
     },
   },
 };

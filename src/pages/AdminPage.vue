@@ -1,22 +1,22 @@
 <template>
-  <AdminPage />
+  <MemberList />
 </template>
 
 
 <script>
-import AdminPage from "./pages/AdminPage.vue";
+import MemberList from "../components/MemberList.vue";
 
 export default {
-  name: "App",
+  name: "MainPage",
   components: {
-    AdminPage,
+    MemberList,
   },
   data() {
     return {};
   },
   computed: {
-    router() {
-      return this.$store.state.pageRouter;
+    tabIndex() {
+      return this.$store.state.tabIndex;
     },
   },
 };

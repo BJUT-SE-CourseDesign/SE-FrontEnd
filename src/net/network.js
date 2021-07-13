@@ -230,3 +230,66 @@ export function paperList(data) {
         console.log(res);
     });
 }
+
+export function adminUserList() {
+    const url = host + "admin/user/list";
+    axios.post(url, {
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function adminModifyUserPassword(data) {
+    const url = host + "admin/user/modifypassword";
+    axios.post(url, {
+        'username': data.username,
+        'newPassword': data.newPassword,
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function adminDeleteUser(data) {
+    const url = host + "admin/user/delete";
+    axios.post(url, {
+        'username': data.username,
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function adminSettingsQuery(data) {
+    const url = host + "admin/settings/query";
+    axios.post(url, {
+        'Key': data.Key,
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function adminSettingsModify(data) {
+    const url = host + "admin/settings/modify";
+    axios.post(url, {
+        'Key': data.Key,
+        'Value': data.Value,
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function adminSettingsList() {
+    const url = host + "admin/settings/list";
+    axios.post(url, {
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function adminFolderQueryShared(data) {
+    const url = host + "admin/folder/queryshared";
+    axios.post(url, {
+        'FolderID': data.folderID,
+    }).then(res => {
+        console.log(res);
+    });
+}

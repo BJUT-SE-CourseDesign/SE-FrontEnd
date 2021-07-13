@@ -59,7 +59,7 @@ export function movePDF(data) {
 //     });
 // }
 
-export function getAllFile(data) {
+export function getAllFile() {
     const url = host + "paper/all";
     axios.get(url, {
 
@@ -96,7 +96,7 @@ export function uploadFile(data) {
     });
 }
 
-export function classify(data) {
+export function classify() {
     const url = host + "folder/list";
     axios.get(url, {
 
@@ -133,7 +133,7 @@ export function folderRename(data) {
     });
 }
 
-export function downloadFile(data) {
+export function downloadFolder(data) {
     const url = host + "paper/download";
     axios.post(url, {
         'FID': data.fid,
@@ -142,7 +142,7 @@ export function downloadFile(data) {
         console.log(res);
     });
 
-    
+
 }
 
 // export function deleteFolder(data) {

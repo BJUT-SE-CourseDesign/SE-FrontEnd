@@ -12,21 +12,33 @@ export function userRegister(data) {
     });
 }
 
-export function userLog(data) {
+export function userLogin(data) {
+    const url = host + "users/login";
+    axios.post(url, {
+        'username': data.username,
+        'password': data.password,
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function modifyPassword(data) {
     const url = host + "users/modifypassword";
     axios.post(url, {
-        'newpassward': data.newpassward,
+        'newpassword': data.newpassword,
         'oldpassword': data.oldpassword,
     }).then(res => {
         console.log(res);
     });
 }
 
-export function loadPDF(data) {
+export function importPDF(data) {
     const url = host + "paper/import";
     axios.post(url, {
-        'Name': data.name,
-        'FID': data.fid,
+        'folderName': data.folderName,
+        'FolderID': data.folderID,
+        'shared': data.shared,
+        'file': data.file,
     }).then(res => {
         console.log(res);
     });
@@ -35,62 +47,70 @@ export function loadPDF(data) {
 export function movePDF(data) {
     const url = host + "paper/folder";
     axios.post(url, {
-        'FID': data.fid,
+        'old_folderID': data.oldFolderID,
+        'new_folderID': data.newFolderID,
+        'PaperID': data.paperID,
     }).then(res => {
         console.log(res);
     });
 }
 
-// export function deleteFile(data) {
-//     const url = host + "paper/delete";
-//     axios.post(url, {
-//         'FID': data.fid,
-//     }).then(res => {
-//         console.log(res);
-//     });
-// }
+export function metaData(data) {
+    const url = host + "paper/metadata";
+    axios.post(url, {
+        'PaperID': data.paperID,
+        'Title': data.title,
+        'Authors': data.authors,
+        'Conference': data.conference,
+        'Abstract': data.abstract,
+        'Keywords': data.Keywords,
+        'Year': data.year,
+    }).then(res => {
+        console.log(res);
+    });
+}
 
-// export function deleteFile(data) {
-//     const url = host + "paper/delete";
-//     axios.post(url, {
-//         'FID': data.fid,
-//     }).then(res => {
-//         console.log(res);
-//     });
-// }
+export function deletePaper(data) {
+    const url = host + "paper/delete";
+    axios.post(url, {
+        'PaperID': data.paperID,
+    }).then(res => {
+        console.log(res);
+    });
+}
 
-export function getAllFile() {
+export function getAllPaper() {
     const url = host + "paper/all";
     axios.get(url, {
-
     }).then(res => {
         console.log(res);
     });
 }
 
-// export function queryFile(data) {
-//     const url = host + "paper/query";
-//     axios.post(url, {
-//         'FID': data.fid,
-//     }).then(res => {
-//         console.log(res);
-//     });
-// }
+export function queryFile(data) {
+    const url = host + "paper/query";
+    axios.post(url, {
+        'keywords': data.keywords,
+        'query_type': data.queryType,
+    }).then(res => {
+        console.log(res);
+    });
+}
 
-export function downloadFile(data) {
+export function downloadPaper(data) {
     const url = host + "paper/download";
     axios.post(url, {
-        'FID': data.fid,
-        'Version': data.version
+        'PaperID': data.paperID,
+        'Version': data.version,
     }).then(res => {
         console.log(res);
     });
 }
 
-export function uploadFile(data) {
+export function uploadPaper(data) {
     const url = host + "paper/upload";
     axios.post(url, {
-        'FID': data.fid,
+        'PaperID': data.paperID,
     }).then(res => {
         console.log(res);
     });
@@ -108,16 +128,17 @@ export function classify() {
 export function customFolder(data) {
     const url = host + "folder/add";
     axios.post(url, {
-        'folderName': data.folderName
+        'folderName': data.folderName,
+        'shared': data.shared,
     }).then(res => {
         console.log(res);
     });
 }
 
-export function addFolder(data) {
+export function joinFolder(data) {
     const url = host + "folder/join";
     axios.post(url, {
-        'FUUID': data.fuuid,
+        'FUUID': data.fuuID,
     }).then(res => {
         console.log(res);
     });
@@ -126,85 +147,86 @@ export function addFolder(data) {
 export function folderRename(data) {
     const url = host + "folder/rename";
     axios.post(url, {
-        'FID': data.fid,
-        'folderName': data.folderName
+        'FolderID': data.folderID,
+        'oldFolderName': data.oldFolderName,
+        'newFolderName': data.newFolderName,
     }).then(res => {
         console.log(res);
     });
 }
 
-export function downloadFolder(data) {
-    const url = host + "paper/download";
+export function deleteFolder(data) {
+    const url = host + "folder/delete";
     axios.post(url, {
-        'FID': data.fid,
-        'Version': data.version
+        'FolderID': data.folderID,
     }).then(res => {
         console.log(res);
     });
-
-
 }
-
-// export function deleteFolder(data) {
-//     const url = host + "folder/delete";
-//     axios.post(url, {
-//         'FID': data.fid,
-//     }).then(res => {
-//         console.log(res);
-//     });
-// }
 
 export function shareFolder(data) {
     const url = host + "folder/share";
     axios.post(url, {
-        'FID': data.fid,
+        'FolderID': data.folderID,
     }).then(res => {
         console.log(res);
     });
 }
 
-export function cancelFolderShare(data) {
+export function unshareFolder(data) {
     const url = host + "folder/unshare";
     axios.post(url, {
-        'FID': data.fid,
+        'FolderID': data.folderID,
     }).then(res => {
         console.log(res);
     });
 }
 
 export function memberList(data) {
-    const url = host + "folder/memberList";
+    const url = host + "folder/memberlist";
     axios.post(url, {
-        'FID': data.fid,
+        'FolderID': data.folderID,
     }).then(res => {
         console.log(res);
     });
 }
 
-export function cancelMemberList(data) {
+export function deleteMember(data) {
     const url = host + "folder/deletemember";
     axios.post(url, {
-        'FID': data.fid,
-        'username': data.username
+        'FolderID': data.folderID,
+        'folderName': data.folderName,
+        'shared': data.shared,
+        'UserName': data.username,
     }).then(res => {
         console.log(res);
     });
 }
 
-export function applyEdit(data) {
+export function paperLock(data) {
     const url = host + "paper/lock";
     axios.post(url, {
-        'FID': data.fid,
+        'PaperID': data.paperID,
     }).then(res => {
         console.log(res);
     });
 }
 
-// export function finishEdit(data) {
-//     const url = host + "paper/unlock";
-//     axios.post(url, {
-//         'name'
-//     }).then(res => {
-//         console.log(res);
-//     });
-// }
+export function paperUnlock(data) {
+    const url = host + "paper/unlock";
+    axios.post(url, {
+        'PaperID': data.paperID,
+    }).then(res => {
+        console.log(res);
+    });
+}
+
+export function paperList(data) {
+    const url = host + "paper/list";
+    axios.post(url, {
+        'PaperID': data.paperID,
+        'Version': data.version,
+    }).then(res => {
+        console.log(res);
+    });
+}

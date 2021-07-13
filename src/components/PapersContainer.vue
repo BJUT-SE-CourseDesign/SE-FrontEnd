@@ -1,10 +1,19 @@
 <template>
+  <v-contextmenu ref="contextmenu">
+    <v-contextmenu-item>菜单1</v-contextmenu-item>
+    <v-contextmenu-item>菜单2</v-contextmenu-item>
+    <v-contextmenu-item>菜单3</v-contextmenu-item>
+  </v-contextmenu>
+
   <el-table
     :data="tableData"
     style="width: 100%"
     row-key="id"
     border
     highlight-current-row="true"
+    height="100%"
+    max-height="100%"
+    v-contextmenu:contextmenu
   >
     <el-table-column prop="ifRead" width="30">
       <template #header>

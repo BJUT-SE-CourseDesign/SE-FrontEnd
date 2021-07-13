@@ -3,7 +3,7 @@
     <WebViewer
       :loadPDF="
         (instance) => {
-          loadPDF(instance);
+          loadPDFReader(instance);
         }
       "
       initialDoc="https://pdftron.s3.amazonaws.com/downloads/pl/demo-annotated.pdf"
@@ -23,17 +23,8 @@ export default {
     return {};
   },
   methods: {
-    loadPDF(instance) {
-      console.log("hi");
-      console.log(this.$store.state);
-      const tabIndex = this.$store.state.tabIndex;
-      const file = this.$store.state.fileObjs[tabIndex];
-      instance.loadDocument(file, { filename: file.name });
-      const { docViewer } = instance;
-      docViewer.on("documentLoaded", () => {
-        // perform document operations
-      });
-      console.log("pdf loaded");
+    loadPDFReader(instance) {
+      this.$store.commit("setPDFInstance", instance);
     },
   },
 };

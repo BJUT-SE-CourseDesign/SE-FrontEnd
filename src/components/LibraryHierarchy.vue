@@ -1,6 +1,12 @@
 <template>
+  <v-contextmenu ref="contextmenu">
+    <v-contextmenu-item>菜单1</v-contextmenu-item>
+    <v-contextmenu-item>菜单2</v-contextmenu-item>
+    <v-contextmenu-item>菜单3</v-contextmenu-item>
+  </v-contextmenu>
+
   <div class="root">
-    <div class="el-paper hierarchy">
+    <div class="el-paper hierarchy" v-contextmenu:contextmenu>
       <el-menu
         default-active="2"
         class="el-menu-vertical-demo"

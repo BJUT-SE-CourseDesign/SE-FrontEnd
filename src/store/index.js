@@ -52,6 +52,15 @@ function formatFileInfo(fileType, title, addedDate) {
     }
 }
 
+function loadPDFFile(instance, file) {
+    instance.loadDocument(file, { filename: file.name });
+    const { docViewer } = instance;
+    docViewer.on("documentLoaded", () => {
+        // perform document operations
+    });
+    console.log("pdf loaded");
+}
+
 export default createStore({
     state() {
         return {
@@ -61,6 +70,7 @@ export default createStore({
             filterIndex: 0,
             fileObjs: [null],
             fileTables: [],
+            pdfInstance: null
         }
     },
     getters: {
@@ -89,7 +99,15 @@ export default createStore({
         switchTab: (state, index) => {
             index = parseInt(index);
             if (index >= 0 && index < state.openedTabs.length) {
+                if (index === 0) {
+                    state.pdfInstance = null;
+                }
                 state.tabIndex = index;
+                if (state.pdfInstance) {
+                    const tabIndex = state.tabIndex;
+                    const file = state.fileObjs[tabIndex];
+                    loadPDFFile(state.pdfInstance, file);
+                }
             }
         },
         changeFilterValue: (state, index) => {
@@ -104,6 +122,12 @@ export default createStore({
             const date = new Date();
             const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
             state.fileTables.push(formatFileInfo(fileInfo.fileType, fileInfo.fileName, today));
+        },
+        setPDFInstance: (state, instance) => {
+            state.pdfInstance = instance;
+            const tabIndex = state.tabIndex;
+            const file = state.fileObjs[tabIndex];
+            loadPDFFile(state.pdfInstance, file);
         }
     },
 });

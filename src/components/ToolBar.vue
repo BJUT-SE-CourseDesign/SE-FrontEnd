@@ -93,7 +93,6 @@ export default {
       let fileName = fileObj.name.split(".");
       const fileType = fileName[fileName.length - 1];
       fileName = fileName.slice(0, fileName.length - 1).join("");
-      console.log(fileObj);
       this.$store.commit("addFileObj", { fileObj, fileName, fileType });
     },
   },

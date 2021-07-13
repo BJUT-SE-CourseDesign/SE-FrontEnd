@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "@pdftron/webviewer": "^7.3.3",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.54",
     "v-contextmenu": "^3.0.0",
     "vue": "^3.0.0",
-    "vue-pdf": "^4.3.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

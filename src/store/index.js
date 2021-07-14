@@ -69,11 +69,17 @@ export default createStore({
             logOrChange: true,
             tabIndex: 0,
             openedTabs: ['我的文献库'],
+            selectedFolder: 2,
             filterIndex: 0,
             fileObjs: [null],
             fileTables: [],
             pdfInstance: null,
-            adminOrUser: false
+            adminOrUser: false,
+            foldersList: [],
+            usersList: [],
+            userFolder: [],
+            onNewFolder: false,
+            onNewFolderCallBack: null,
         }
     },
     getters: {
@@ -140,6 +146,27 @@ export default createStore({
         },
         logInAdmin: (state, isAdmin) => {
             state.adminOrUser = isAdmin;
+        },
+        getAllFolders: (state, foldersList) => {
+            state.foldersList = foldersList;
+        },
+        getAllUsers: (state, usersList) => {
+            state.usersList = usersList;
+        },
+        switchOnNewFolder: (state, onOrOff) => {
+            if (onOrOff) {
+                setTimeout(state.onNewFolderCallBack, 100);
+            }
+            state.onNewFolder = onOrOff;
+        },
+        setOnNewFolderCallBack: (state, callback) => {
+            state.onNewFolderCallBack = callback;
+        },
+        setSelectedFolder: (state, index) => {
+            state.selectedFolder = index;
+        },
+        displayUserFolder: (state, userFolder) => {
+            state.userFolder = userFolder;
         }
     },
 });

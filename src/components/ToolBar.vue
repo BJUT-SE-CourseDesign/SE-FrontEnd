@@ -32,12 +32,14 @@
             type="success"
             icon="el-icon-folder-add"
             size="small"
+            @click="newFolder"
           ></el-button>
           <el-button
             type="danger"
             icon="el-icon-folder-remove"
             size="small"
-            disabled
+            :disabled="selectedFolder <= 3"
+            @click="deleteFolder"
           ></el-button>
         </el-button-group>
         文件夹操作
@@ -62,13 +64,6 @@
         </el-button-group>
         帮助
       </div>
-
-      <el-button
-        type="success"
-        icon="el-icon-eleme"
-        size="big"
-        @click="apiTest"
-      ></el-button>
     </div>
     <div style="flex: 1"></div>
     <div class="el-search">
@@ -94,7 +89,7 @@
             ><i class="el-icon-key"></i>修改密码</el-dropdown-item
           >
           <el-dropdown-item @click="logOut"
-            ><i class="el-icon-circle-close"></i>账号注销</el-dropdown-item
+            ><i class="el-icon-circle-close"></i>退出登陆</el-dropdown-item
           >
           <el-dropdown-item v-show="adminOrUser" @click="adminIn"
             ><i class="el-icon-user"></i>系统管理</el-dropdown-item
@@ -106,16 +101,7 @@
 </template>
 
 <script>
-function deleteAllCookies() {
-  let cookies = document.cookie.split(";");
-  console.log(cookies);
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i];
-    let eqPos = cookie.indexOf("=");
-    let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  }
-}
+import { deleteFolder, getFolderList, adminUserList } from "../net/network";
 
 export default {
   name: "ToolBar",
@@ -135,13 +121,9 @@ export default {
       fileName = fileName.slice(0, fileName.length - 1).join("");
       this.$store.commit("addFileObj", { fileObj, fileName, fileType });
     },
-    apiTest() {
-      console.log("api test start");
-    },
     logOut() {
       this.$store.commit("changeRouter", 0);
       this.$store.commit("switchLogOrChange", true);
-      deleteAllCookies();
     },
     toChangePassword() {
       this.$store.commit("changeRouter", 0);
@@ -149,6 +131,55 @@ export default {
     },
     adminIn() {
       this.$store.commit("changeRouter", 2);
+      adminUserList((res) => {
+        let dictUsersList = [];
+        for (let i = 0; i < res.data.user_list.length; i++) {
+          dictUsersList.push({
+            userID: res.data.user_list[i],
+          });
+        }
+        this.$store.commit("getAllUsers", dictUsersList);
+        console.log(dictUsersList);
+      });
+    },
+    newFolder() {
+      this.$store.commit("switchOnNewFolder", true);
+    },
+    deleteFolder() {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        center: true,
+      })
+        .then(() => {
+          const folderIndex = this.$store.state.selectedFolder;
+          const folderInfo = this.$store.state.foldersList[folderIndex - 4];
+          deleteFolder({ folderID: folderInfo.FID }, (res) => {
+            if (res.data.status === 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              getFolderList((res) => {
+                if (res.data.status === 200) {
+                  this.$store.commit("getAllFolders", res.data.folder_list);
+                }
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
   computed: {
@@ -157,6 +188,9 @@ export default {
     },
     adminOrUser() {
       return this.$store.state.adminOrUser;
+    },
+    selectedFolder() {
+      return this.$store.state.selectedFolder;
     },
   },
 };

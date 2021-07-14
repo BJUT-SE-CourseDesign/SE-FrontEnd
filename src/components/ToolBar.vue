@@ -91,6 +91,9 @@
           <el-dropdown-item @click="logOut"
             ><i class="el-icon-circle-close"></i>退出登陆</el-dropdown-item
           >
+          <el-dropdown-item v-show="adminOrUser" @click="adminIn"
+            ><i class="el-icon-user"></i>系统管理</el-dropdown-item
+          >
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -125,6 +128,9 @@ export default {
     toChangePassword() {
       this.$store.commit("changeRouter", 0);
       this.$store.commit("switchLogOrChange", false);
+    },
+    adminIn() {
+      this.$store.commit("changeRouter", 2);
     },
     newFolder() {
       this.$store.commit("switchOnNewFolder", true);
@@ -169,6 +175,9 @@ export default {
   computed: {
     username() {
       return this.$store.state.username;
+    },
+    adminOrUser() {
+      return this.$store.state.adminOrUser;
     },
     selectedFolder() {
       return this.$store.state.selectedFolder;

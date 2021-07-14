@@ -239,11 +239,11 @@ export function userIsAdmin(callback) {
     });
 }
 
-export function adminUserList() {
+export function adminUserList(callback) {
     const url = host + "admin/user/list";
-    axios.post(url, {
+    axios.get(url, {
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

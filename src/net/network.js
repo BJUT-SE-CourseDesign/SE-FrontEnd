@@ -33,15 +33,19 @@ export function modifyPassword(data, callback) {
     });
 }
 
-export function importPDF(data) {
+export function importPDF(data, callback) {
     const url = host + "paper/import";
-    axios.post(url, {
-        'folderName': data.folderName,
-        'FolderID': data.folderID,
-        'shared': data.shared,
-        'file': data.file,
+    const bodyFormData = new FormData();
+    bodyFormData.append('FolderID', data.folderID);
+    bodyFormData.append('file', data.file);
+
+    axios({
+        method: "post",
+        url: url,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
@@ -163,21 +167,21 @@ export function deleteFolder(data, callback) {
     });
 }
 
-export function shareFolder(data) {
+export function shareFolder(data, callback) {
     const url = host + "folder/share";
     axios.post(url, {
         'FolderID': data.folderID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
-export function unshareFolder(data) {
+export function unshareFolder(data, callback) {
     const url = host + "folder/unshare";
     axios.post(url, {
         'FolderID': data.folderID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

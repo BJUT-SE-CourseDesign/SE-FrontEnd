@@ -1,12 +1,6 @@
 <template>
-  <v-contextmenu ref="contextmenu" @show="hi">
-    <v-contextmenu-item>重命名文件夹</v-contextmenu-item>
-    <v-contextmenu-item @click="hi">删除文件夹</v-contextmenu-item>
-    <v-contextmenu-item>菜单3</v-contextmenu-item>
-  </v-contextmenu>
-
   <div class="root">
-    <div class="el-paper hierarchy" v-contextmenu:contextmenu>
+    <div class="el-paper hierarchy">
       <el-menu
         :default-active="selectedFolder + ''"
         class="el-menu-vertical-demo"
@@ -27,7 +21,19 @@
           :index="idx + 4"
         >
           <i class="el-icon-user"></i>
-          <template #title>{{ folder.folderName }}</template>
+          <template #title
+            ><span :ref="`folder${idx + 4}Span`">{{ folder.folderName }}</span>
+            <input
+              :id="folder.FID"
+              v-model="folder.folderName"
+              placeholder="请输入内容"
+              :ref="`folder${idx + 4}Input`"
+              class="newFolderInput"
+              style="display: none"
+              onfocus="this.select()"
+              @blur="getNewFolderName"
+            />
+          </template>
         </el-menu-item>
         <el-menu-item :index="allFolders.length + 4 + ''">
           <input
@@ -58,7 +64,7 @@
 
 
 <script>
-import { addFolder, getFolderList } from "../net/network";
+import { addFolder, getFolderList, folderRename } from "../net/network";
 
 export default {
   name: "LibraryHierarchy",
@@ -115,18 +121,55 @@ export default {
             }
           }
         );
+      } else {
+        const currentFolderIndex = this.$store.state.selectedFolder;
+        this.$store.commit(
+          "setSelectedFolder",
+          parseInt(currentFolderIndex) - 1
+        );
       }
       this.$store.commit("switchOnNewFolder", false);
       this.newFolderName = "未命名文件夹";
     },
-    focusNewFolderInput() {
-      this.$refs.newFolderInput.select();
-    },
     handleOpenFolder(e) {
+      const refSpan = `folder${e}Span`;
+      const refInput = `folder${e}Input`;
+      if (parseInt(e) === this.$store.state.selectedFolder) {
+        this.$refs[refSpan].style.display = "none";
+        this.$refs[refInput].style.display = "inline";
+        this.$refs[refInput].focus();
+      }
       this.$store.commit("setSelectedFolder", parseInt(e));
     },
-    hi(e) {
-      console.log(e);
+    getNewFolderName(e) {
+      const idx = this.$store.state.selectedFolder;
+      const refSpan = `folder${idx}Span`;
+      const refInput = `folder${idx}Input`;
+      const newName = e.target.value;
+      const fid = e.target.id;
+      if (newName.length >= 0) {
+        folderRename({ folderID: fid, newFolderName: newName }, (res) => {
+          if (res.data.status === 200) {
+            getFolderList((res) => {
+              if (res.data.status === 200) {
+                this.$store.commit("getAllFolders", res.data.folder_list);
+                this.$message({
+                  type: "success",
+                  message: "重命名成功!",
+                });
+              } else {
+                this.$message({
+                  type: "error",
+                  message: "重命名失败!",
+                });
+              }
+            });
+          }
+        });
+      }
+      console.log(this.$refs[refSpan]);
+      this.$refs[refSpan].style.display = "inline";
+      this.$refs[refInput].style.display = "none";
     },
   },
 };

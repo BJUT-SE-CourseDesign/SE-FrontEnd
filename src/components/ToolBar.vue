@@ -64,13 +64,6 @@
         </el-button-group>
         帮助
       </div>
-
-      <el-button
-        type="success"
-        icon="el-icon-eleme"
-        size="big"
-        @click="apiTest"
-      ></el-button>
     </div>
     <div style="flex: 1"></div>
     <div class="el-search">
@@ -124,9 +117,6 @@ export default {
       const fileType = fileName[fileName.length - 1];
       fileName = fileName.slice(0, fileName.length - 1).join("");
       this.$store.commit("addFileObj", { fileObj, fileName, fileType });
-    },
-    apiTest() {
-      console.log("api test start");
     },
     logOut() {
       this.$store.commit("changeRouter", 0);

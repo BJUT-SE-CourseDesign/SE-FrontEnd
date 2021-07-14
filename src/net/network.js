@@ -143,14 +143,14 @@ export function joinFolder(data) {
     });
 }
 
-export function folderRename(data) {
+export function folderRename(data, callback) {
     const url = host + "folder/rename";
     axios.post(url, {
         'FolderID': data.folderID,
         'oldFolderName': data.oldFolderName,
         'newFolderName': data.newFolderName,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

@@ -74,6 +74,7 @@ export default createStore({
             fileObjs: [null],
             fileTables: [],
             pdfInstance: null,
+            adminOrUser: false
             foldersList: [],
             onNewFolder: false,
             onNewFolderCallBack: null,
@@ -94,7 +95,7 @@ export default createStore({
         },
         changeRouter: (state, router) => {
             router = parseInt(router);
-            if (router >= 0 && router <= 1) {
+            if (router >= 0 && router <= 2) {
                 state.pageRouter = router;
             }
         },
@@ -141,6 +142,8 @@ export default createStore({
         switchLogOrChange: (state, target) => {
             state.logOrChange = target;
         },
+        logInAdmin: (state, isAdmin) => {
+            state.adminOrUser = isAdmin;
         getAllFolders: (state, foldersList) => {
             state.foldersList = foldersList;
         },

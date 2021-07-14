@@ -91,6 +91,9 @@
           <el-dropdown-item @click="logOut"
             ><i class="el-icon-circle-close"></i>退出登陆</el-dropdown-item
           >
+          <el-dropdown-item v-show="adminOrUser" @click="adminIn"
+            ><i class="el-icon-user"></i>系统管理</el-dropdown-item
+          >
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -98,6 +101,16 @@
 </template>
 
 <script>
+function deleteAllCookies() {
+  let cookies = document.cookie.split(";");
+  console.log(cookies);
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
+    let eqPos = cookie.indexOf("=");
+    let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+}
 import { deleteFolder, getFolderList } from "../net/network";
 
 export default {
@@ -121,11 +134,15 @@ export default {
     logOut() {
       this.$store.commit("changeRouter", 0);
       this.$store.commit("switchLogOrChange", true);
+      deleteAllCookies();
     },
     toChangePassword() {
       this.$store.commit("changeRouter", 0);
       this.$store.commit("switchLogOrChange", false);
     },
+    adminIn() {
+      this.$store.commit("changeRouter", 2);
+      },
     newFolder() {
       this.$store.commit("switchOnNewFolder", true);
     },
@@ -169,6 +186,9 @@ export default {
   computed: {
     username() {
       return this.$store.state.username;
+    },
+    adminOrUser() {
+      return this.$store.state.adminOrUser;
     },
     selectedFolder() {
       return this.$store.state.selectedFolder;

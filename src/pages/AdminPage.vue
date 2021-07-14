@@ -1,17 +1,20 @@
 <template>
-  <MemberList />
-  <SystemSet />
+  <AdminMemberList />
+  <AdminSystemSet />
+  <AdminBack />
 </template>
 
 <script>
-import MemberList from "../components/MemberList.vue";
-import SystemSet from "../components/SystemSet.vue";
+import AdminMemberList from "../components/AdminMemberList.vue";
+import AdminSystemSet from "../components/AdminSystemSet.vue";
+import AdminBack from "../components/AdminBack.vue";
 
 export default {
   name: "MainPage",
   components: {
-    MemberList,
-    SystemSet,
+    AdminMemberList,
+    AdminSystemSet,
+    AdminBack,
   },
   data() {
     return {};

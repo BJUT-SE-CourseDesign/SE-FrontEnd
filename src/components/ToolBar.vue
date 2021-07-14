@@ -96,6 +96,9 @@
           <el-dropdown-item @click="logOut"
             ><i class="el-icon-circle-close"></i>账号注销</el-dropdown-item
           >
+          <el-dropdown-item v-show="adminOrUser" @click="adminIn"
+            ><i class="el-icon-user"></i>系统管理</el-dropdown-item
+          >
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -103,6 +106,17 @@
 </template>
 
 <script>
+function deleteAllCookies() {
+  let cookies = document.cookie.split(";");
+  console.log(cookies);
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
+    let eqPos = cookie.indexOf("=");
+    let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+}
+
 export default {
   name: "ToolBar",
   data() {
@@ -127,15 +141,22 @@ export default {
     logOut() {
       this.$store.commit("changeRouter", 0);
       this.$store.commit("switchLogOrChange", true);
+      deleteAllCookies();
     },
     toChangePassword() {
       this.$store.commit("changeRouter", 0);
       this.$store.commit("switchLogOrChange", false);
     },
+    adminIn() {
+      this.$store.commit("changeRouter", 2);
+    },
   },
   computed: {
     username() {
       return this.$store.state.username;
+    },
+    adminOrUser() {
+      return this.$store.state.adminOrUser;
     },
   },
 };

@@ -5,12 +5,12 @@
       <el-table-column
         property="parametersName"
         label="参数名"
-        width="150vh"
+        width="120vh"
       ></el-table-column>
       <el-table-column
         property="parametersValue"
         label="参数值"
-        width="150vh"
+        width="120vh"
       ></el-table-column>
     </el-table>
   </el-drawer>

@@ -103,8 +103,6 @@
 </template>
 
 <script>
-import { userRegister } from "../net/network";
-
 export default {
   name: "ToolBar",
   data() {

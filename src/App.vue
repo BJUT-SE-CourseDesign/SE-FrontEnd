@@ -1,15 +1,18 @@
 <template>
-  <AdminPage />
+  <LoginPage v-if="router === 0" />
+  <MainPage v-else />
 </template>
 
 
 <script>
-import AdminPage from "./pages/AdminPage.vue";
+import MainPage from "./pages/MainPage.vue";
+import LoginPage from "./pages/LoginPage.vue";
 
 export default {
   name: "App",
   components: {
-    AdminPage,
+    MainPage,
+    LoginPage,
   },
   data() {
     return {};

@@ -3,7 +3,6 @@
   <SystemSet />
 </template>
 
-
 <script>
 import MemberList from "../components/MemberList.vue";
 import SystemSet from "../components/SystemSet.vue";

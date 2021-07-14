@@ -235,8 +235,8 @@ export function paperList(data) {
 export function modifyPassword(data) {
     const url = host + "users/modifypassword";
     axios.post(url, {
-        'newpassword': data.newpassword,
-        'oldpassword': data.oldpassword,
+        'newPassword': data.newPassword,
+        'oldPassword': data.oldPassword,
     }).then(res => {
         console.log(res);
     });

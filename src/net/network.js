@@ -117,22 +117,20 @@ export function uploadPaper(data) {
     });
 }
 
-export function classify() {
+export function getFolderList(callback) {
     const url = host + "folder/list";
-    axios.get(url, {
-
-    }).then(res => {
-        console.log(res);
+    axios.get(url).then(res => {
+        callback(res);
     });
 }
 
-export function customFolder(data) {
+export function addFolder(data, callback) {
     const url = host + "folder/add";
     axios.post(url, {
         'folderName': data.folderName,
         'shared': data.shared,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
@@ -145,23 +143,23 @@ export function joinFolder(data) {
     });
 }
 
-export function folderRename(data) {
+export function folderRename(data, callback) {
     const url = host + "folder/rename";
     axios.post(url, {
         'FolderID': data.folderID,
         'oldFolderName': data.oldFolderName,
         'newFolderName': data.newFolderName,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
-export function deleteFolder(data) {
+export function deleteFolder(data, callback) {
     const url = host + "folder/delete";
     axios.post(url, {
         'FolderID': data.folderID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

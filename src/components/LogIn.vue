@@ -30,7 +30,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { userLogin, userRegister, userIsAdmin } from "../net/network";
+import { userLogin, userRegister, getFolderList, userIsAdmin } from "../net/network";
 
 export default defineComponent({
   setup() {
@@ -63,6 +63,9 @@ export default defineComponent({
                 this.$store.commit("logInAdmin", true);
               } else {
                 this.$store.commit("logInAdmin", false);
+            getFolderList((res) => {
+              if (res.data.status === 200) {
+                this.$store.commit("getAllFolders", res.data.folder_list);
               }
             });
           } else {

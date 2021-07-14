@@ -78,6 +78,7 @@ export default {
     return {
       options: this.$store.getters.allFilterValues,
       newFolderName: "未命名文件夹",
+      currentFolderName: "",
     };
   },
   computed: {
@@ -138,6 +139,7 @@ export default {
         this.$refs[refSpan].style.display = "none";
         this.$refs[refInput].style.display = "inline";
         this.$refs[refInput].focus();
+        this.currentFolderName = this.$refs[refInput].value;
       }
       this.$store.commit("setSelectedFolder", parseInt(e));
     },
@@ -147,7 +149,7 @@ export default {
       const refInput = `folder${idx}Input`;
       const newName = e.target.value;
       const fid = e.target.id;
-      if (newName.length >= 0) {
+      if (newName.length >= 0 && newName !== this.currentFolderName) {
         folderRename({ folderID: fid, newFolderName: newName }, (res) => {
           if (res.data.status === 200) {
             getFolderList((res) => {
@@ -167,7 +169,7 @@ export default {
           }
         });
       }
-      console.log(this.$refs[refSpan]);
+      this.currentFolderName = "";
       this.$refs[refSpan].style.display = "inline";
       this.$refs[refInput].style.display = "none";
     },

@@ -1,11 +1,12 @@
 <template>
   <div class="paper-detail">
     <el-tabs type="border-card" style="height: 100%">
-      <el-tab-pane
-        v-for="tab in detailTabs"
-        :label="tab"
-        :key="tab"
-      ></el-tab-pane>
+      <el-tab-pane label="详情" key="详情">
+        <div>标题</div>
+        作者 来源 摘要 关键词 年份
+      </el-tab-pane>
+      <el-tab-pane label="笔记" key="笔记"> </el-tab-pane>
+      <el-tab-pane label="目录" key="目录"> </el-tab-pane>
     </el-tabs>
   </div>
 </template>

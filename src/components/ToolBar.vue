@@ -7,6 +7,28 @@
     @change="uploadFile"
     multiple
   />
+  <el-dialog title="导入文件" v-model="uploadDialog">
+    <el-form :model="form">
+      <el-form-item :label-width="labelWidth">
+        <el-button type="primary" @click="mockUploadFile"
+          >上传<i class="el-icon-upload el-icon--right"></i
+        ></el-button>
+        <span> 至 </span>
+        <el-select
+          v-model="importFolderName"
+          placeholder="请选择目标文件夹"
+          @change="changeImportFolder"
+        >
+          <el-option
+            v-for="(folder, index) in folders"
+            :label="folder.folderName"
+            :value="index"
+            :key="folder.FID"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
   <el-row>
     <div class="el-bar">
       <div class="el-upload__tip">
@@ -15,7 +37,10 @@
             type="success"
             icon="el-icon-document-add"
             size="small"
-            @click="mockUploadFile"
+            @click="
+              uploadDialog = true;
+              importFolderIndex = 0;
+            "
           ></el-button>
           <el-button
             type="danger"
@@ -101,13 +126,16 @@
 </template>
 
 <script>
-import { deleteFolder, getFolderList } from "../net/network";
+import { deleteFolder, getFolderList, importPDF } from "../net/network";
 
 export default {
   name: "ToolBar",
   data() {
     return {
       arrow: "el-icon-arrow-down",
+      uploadDialog: false,
+      importFolderIndex: 0,
+      labelWidth: "120px",
     };
   },
   methods: {
@@ -115,11 +143,23 @@ export default {
       this.$refs.uploadButton.click();
     },
     uploadFile() {
+      this.uploadDialog = false;
       const fileObj = this.$refs.uploadButton.files[0];
       let fileName = fileObj.name.split(".");
       const fileType = fileName[fileName.length - 1];
       fileName = fileName.slice(0, fileName.length - 1).join("");
       this.$store.commit("addFileObj", { fileObj, fileName, fileType });
+      const folder = this.$store.state.foldersList[this.importFolderIndex];
+      const folderID = folder.FID;
+      importPDF(
+        {
+          folderID,
+          file: fileObj,
+        },
+        (res) => {
+          console.log(res);
+        }
+      );
     },
     logOut() {
       this.$store.commit("changeRouter", 0);
@@ -171,6 +211,9 @@ export default {
           });
         });
     },
+    changeImportFolder(e) {
+      this.importFolderIndex = e;
+    },
   },
   computed: {
     username() {
@@ -181,6 +224,15 @@ export default {
     },
     selectedFolder() {
       return this.$store.state.selectedFolder;
+    },
+    importFolderName() {
+      if (this.importFolderIndex >= 0) {
+        return this.$store.state.foldersList[this.importFolderIndex].folderName;
+      }
+      return "";
+    },
+    folders() {
+      return this.$store.state.foldersList;
     },
   },
 };

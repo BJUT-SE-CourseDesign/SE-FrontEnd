@@ -138,12 +138,12 @@ export function addFolder(data, callback) {
     });
 }
 
-export function joinFolder(data) {
+export function joinFolder(data, callback) {
     const url = host + "folder/join";
     axios.post(url, {
         'FUUID': data.fuuID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

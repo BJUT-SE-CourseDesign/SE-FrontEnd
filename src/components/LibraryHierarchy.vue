@@ -20,7 +20,7 @@
           :key="folder.FID"
           :index="idx + 4"
         >
-          <i class="el-icon-user"></i>
+          <i class="el-icon-folder"></i>
           <template #title
             ><span :ref="`folder${idx + 4}Span`">{{ folder.folderName }}</span>
             <input

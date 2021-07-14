@@ -74,7 +74,7 @@ export default createStore({
             fileObjs: [null],
             fileTables: [],
             pdfInstance: null,
-            adminOrUser: false
+            adminOrUser: false,
             foldersList: [],
             onNewFolder: false,
             onNewFolderCallBack: null,
@@ -144,6 +144,7 @@ export default createStore({
         },
         logInAdmin: (state, isAdmin) => {
             state.adminOrUser = isAdmin;
+        },
         getAllFolders: (state, foldersList) => {
             state.foldersList = foldersList;
         },

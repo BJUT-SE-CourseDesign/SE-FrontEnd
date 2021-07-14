@@ -154,12 +154,12 @@ export function folderRename(data) {
     });
 }
 
-export function deleteFolder(data) {
+export function deleteFolder(data, callback) {
     const url = host + "folder/delete";
     axios.post(url, {
         'FolderID': data.folderID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

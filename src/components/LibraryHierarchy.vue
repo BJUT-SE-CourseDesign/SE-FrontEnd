@@ -1,17 +1,16 @@
 <template>
-  <v-contextmenu ref="contextmenu">
-    <v-contextmenu-item>菜单1</v-contextmenu-item>
-    <v-contextmenu-item>菜单2</v-contextmenu-item>
+  <v-contextmenu ref="contextmenu" @show="hi">
+    <v-contextmenu-item>重命名文件夹</v-contextmenu-item>
+    <v-contextmenu-item @click="hi">删除文件夹</v-contextmenu-item>
     <v-contextmenu-item>菜单3</v-contextmenu-item>
   </v-contextmenu>
 
   <div class="root">
     <div class="el-paper hierarchy" v-contextmenu:contextmenu>
       <el-menu
-        default-active="2"
+        :default-active="selectedFolder + ''"
         class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
+        @select="handleOpenFolder"
       >
         <h3>论文库</h3>
         <el-menu-item index="2">
@@ -19,22 +18,18 @@
           <template #title>所有文档</template>
         </el-menu-item>
         <el-menu-item index="3">
-          <i class="el-icon-star-off"></i>
-          <template #title>收藏夹</template>
-        </el-menu-item>
-        <el-menu-item index="4">
           <i class="el-icon-timer"></i>
           <template #title>最近添加</template>
         </el-menu-item>
         <el-menu-item
-          v-for="(folder, index) in allFolders"
+          v-for="(folder, idx) in allFolders"
           :key="folder.FID"
-          :index="index + 5 + ''"
+          :index="idx + 4"
         >
           <i class="el-icon-user"></i>
           <template #title>{{ folder.folderName }}</template>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item :index="allFolders.length + 4 + ''">
           <input
             v-show="onNewFolder"
             v-model="newFolderName"
@@ -89,6 +84,9 @@ export default {
     onNewFolder() {
       return this.$store.state.onNewFolder;
     },
+    selectedFolder() {
+      return this.$store.state.selectedFolder;
+    },
   },
   methods: {
     changeFilterValue(index) {
@@ -123,6 +121,12 @@ export default {
     },
     focusNewFolderInput() {
       this.$refs.newFolderInput.select();
+    },
+    handleOpenFolder(e) {
+      this.$store.commit("setSelectedFolder", parseInt(e));
+    },
+    hi(e) {
+      console.log(e);
     },
   },
 };

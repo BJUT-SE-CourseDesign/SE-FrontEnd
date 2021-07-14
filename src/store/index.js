@@ -69,6 +69,7 @@ export default createStore({
             logOrChange: true,
             tabIndex: 0,
             openedTabs: ['我的文献库'],
+            selectedFolder: 2,
             filterIndex: 0,
             fileObjs: [null],
             fileTables: [],
@@ -151,6 +152,9 @@ export default createStore({
         },
         setOnNewFolderCallBack: (state, callback) => {
             state.onNewFolderCallBack = callback;
+        },
+        setSelectedFolder: (state, index) => {
+            state.selectedFolder = index;
         }
     },
 });

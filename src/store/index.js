@@ -47,6 +47,8 @@ export default createStore({
             usersList: [],
             onNewFolder: false,
             onNewFolderCallBack: null,
+            choosePaper: false,
+            ableChooseDelete: false,
         }
     },
     getters: {
@@ -59,6 +61,9 @@ export default createStore({
         }
     },
     mutations: {
+        changeChoosePaper: (state, chooseFlag) => {
+            state.choosePaper = chooseFlag;
+        },
         changeUsername: (state, name) => {
             state.username = name;
         },

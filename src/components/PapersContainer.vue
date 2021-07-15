@@ -37,6 +37,7 @@
       style="width: 100%"
       v-contextmenu:contextmenu
       @cell-dblclick="doubleClickRow"
+      @cell-click="signalClickRow"
     >
       <el-table-column prop="Type" width="60">
         <template #header>
@@ -96,6 +97,12 @@ export default {
   },
   data() {},
   methods: {
+    signalClickRow(row) {
+      console.log("signal click");
+      console.log(row);
+      
+      this.$store.commit("changeChoosePaper", { chooseFlag: true });
+    },
     doubleClickRow(row) {
       console.log(row);
       downloadLatestPaper({ paperID: row.PID }, (res) => {

@@ -142,7 +142,6 @@ export default createStore({
                 }
             }
         },
-
         setLoadMeta: (state, func) => {
             state.loadMeta = func;
         }

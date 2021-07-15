@@ -183,17 +183,6 @@ export default {
       }
     },
   },
-  input0() {
-    console.log("sdfsdafssfsdsg");
-    if (this.$store.state.prePID != this.$store.state.currentPID) {
-      this.input0 = "";
-      this.input1 = "";
-      this.input2 = "";
-      this.input3 = "";
-      this.input4 = "";
-      this.input5 = "";
-    }
-  },
 };
 </script>
 

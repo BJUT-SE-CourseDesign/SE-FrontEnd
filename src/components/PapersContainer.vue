@@ -1,9 +1,12 @@
 <template>
   <v-contextmenu ref="contextmenu">
     <v-contextmenu-submenu title="移动至">
-      <v-contextmenu-item v-for="folder in allFolders" :key="folder">{{
-        folder.folderName
-      }}</v-contextmenu-item>
+      <v-contextmenu-item
+        v-for="folder in allFolders"
+        :key="folder"
+        @click="movepdf(folder)"
+        >{{ folder.folderName }}</v-contextmenu-item
+      >
     </v-contextmenu-submenu>
   </v-contextmenu>
 
@@ -37,6 +40,7 @@
       style="width: 100%"
       v-contextmenu:contextmenu
       @cell-dblclick="doubleClickRow"
+      @cell-mouse-enter="hoverRow"
     >
       <el-table-column prop="Type" width="60">
         <template #header>
@@ -67,6 +71,7 @@ import {
   unshareFolder,
   getFolderList,
   downloadLatestPaper,
+  movePDF,
 } from "../net/network";
 import { ElMessage } from "element-plus";
 
@@ -96,6 +101,18 @@ export default {
   },
   data() {},
   methods: {
+    hoverRow(row) {
+      this.currentHover = row;
+    },
+    movepdf(folder) {
+      console.log(folder);
+      movePDF(
+        { newFolderID: folder.FID, paperID: this.currentHover.PID },
+        (res) => {
+          console.log(res);
+        }
+      );
+    },
     doubleClickRow(row) {
       console.log(row);
       downloadLatestPaper({ paperID: row.PID }, (res) => {

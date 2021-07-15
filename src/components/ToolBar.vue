@@ -201,7 +201,7 @@ export default {
   methods: {
     searchFiles() {
       if (this.searchInput.length < 1) {
-         this.$store.commit(
+        this.$store.commit(
           "setSelectedFolder",
           this.$store.state.selectedFolder
         );
@@ -216,7 +216,7 @@ export default {
           }
         });
       }
-   },
+    },
     deletePaper() {
       deletePaper({ paperID: this.$store.state.currentPID }, (res) => {
         console.log(res.status);

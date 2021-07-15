@@ -103,28 +103,32 @@ export default {
   created() {
     this.$store.commit("setSelectedFolder", 2);
   },
-  data() {},
+  data() {
+    return {
+      prePID: 0,
+    };
+  },
   methods: {
     deletePaper() {
-      deletePaper(
-        { paperID: this.$store.state.currentPID },
-        (res) => {
-          console.log(res.status);
-          this.$store.commit(
-            "setSelectedFolder",
-            this.$store.state.selectedFolder
-          );
-          ElMessage.success({
-            message: "删除成功",
-            type: "success",
-          });
-        }
-      );
+      deletePaper({ paperID: this.$store.state.currentPID }, (res) => {
+        console.log(res.status);
+        this.$store.commit(
+          "setSelectedFolder",
+          this.$store.state.selectedFolder
+        );
+        ElMessage.success({
+          message: "删除成功",
+          type: "success",
+        });
+      });
     },
     signalClickRow(row) {
-      this.$store.commit("changeChoosePaper", true );
-      this.$store.commit("changeCurrentPID",  row.PID );
+      this.$store.commit("changeChoosePaper", true);
+      this.$store.commit("changeCurrentPID", row.PID);
       let currentMetaDate = {};
+      if (this.$store.state.prePID != row.PID) {
+        this.$store.state.prePID = row.PID;
+      }
       getMetaData(
         {
           paperID: row.PID,
@@ -135,6 +139,9 @@ export default {
           console.log(currentMetaDate);
         }
       );
+
+      const loadMeta = this.$store.state.loadMeta;
+      if (loadMeta) loadMeta();
     },
     hoverRow(row) {
       this.currentHover = row;

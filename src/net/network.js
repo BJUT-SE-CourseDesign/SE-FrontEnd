@@ -49,14 +49,13 @@ export function importPDF(data, callback) {
     });
 }
 
-export function movePDF(data) {
+export function movePDF(data, callback) {
     const url = host + "paper/folder";
     axios.post(url, {
-        'old_folderID': data.oldFolderID,
         'new_folderID': data.newFolderID,
         'PaperID': data.paperID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

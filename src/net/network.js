@@ -147,6 +147,15 @@ export function getFolderList(callback) {
     });
 }
 
+export function getFolderPapers(data, callback) {
+    const url = host + "folder/listpaper";
+    axios.post(url, {
+        "FolderID": data.folderID
+    }).then(res => {
+        callback(res);
+    });
+}
+
 export function addFolder(data, callback) {
     const url = host + "folder/add";
     axios.post(url, {

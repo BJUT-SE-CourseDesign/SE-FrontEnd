@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { getFolderPapers, getMetaData, getAllPapers } from "../net/network";
 
 const filterOptions = [
     {
@@ -73,7 +74,6 @@ export default createStore({
         },
         removeTab: (state, index) => {
             index = parseInt(index);
-            console.log(index)
             if (index !== 0) {
                 state.openedTabs.splice(index, 1);
                 state.tabIndex = index - 1;
@@ -135,6 +135,31 @@ export default createStore({
         },
         setSelectedFolder: (state, index) => {
             state.selectedFolder = index;
+            if (index < 4) {
+                getAllPapers((res) => {
+                    state.fileTables = [];
+                    for (let pid of res.data.pids) {
+                        getMetaData({ paperID: pid }, (res) => {
+                            state.fileTables.push(res.data.meta);
+                        });
+                    }
+                });
+            } else {
+                try {
+                    getFolderPapers({
+                        folderID: state.foldersList[index - 4].FID
+                    }, res => {
+                        state.fileTables = [];
+                        for (let pid of res.data.pids) {
+                            getMetaData({ paperID: pid }, (res) => {
+                                state.fileTables.push(res.data.meta);
+                            });
+                        }
+                    });
+                } catch {
+                    console.log("Get Folde Wrong!");
+                }
+            }
         },
     },
 });

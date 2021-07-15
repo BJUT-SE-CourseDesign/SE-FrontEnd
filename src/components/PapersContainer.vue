@@ -1,8 +1,10 @@
 <template>
   <v-contextmenu ref="contextmenu">
-    <v-contextmenu-item>菜单1</v-contextmenu-item>
-    <v-contextmenu-item>菜单2</v-contextmenu-item>
-    <v-contextmenu-item>菜单3</v-contextmenu-item>
+    <v-contextmenu-submenu title="移动至">
+      <v-contextmenu-item v-for="folder in allFolders" :key="folder">{{
+        folder.folderName
+      }}</v-contextmenu-item>
+    </v-contextmenu-submenu>
   </v-contextmenu>
 
   <div class="paper-container" style="flex: 1">
@@ -64,8 +66,6 @@ import {
   shareFolder,
   unshareFolder,
   getFolderList,
-  getAllPapers,
-  getMetaData,
   downloadLatestPaper,
 } from "../net/network";
 import { ElMessage } from "element-plus";
@@ -91,17 +91,8 @@ function copyToClip(content) {
 export default {
   name: "PapersContainer",
   components: {},
-  mounted() {
-    getAllPapers((res) => {
-      let tables = [];
-      this.$store.commit("setFileTable", tables);
-      console.log(res);
-      for (let pid of res.data.pids) {
-        getMetaData({ paperID: pid }, (res) => {
-          this.$store.commit("addFileTableRow", res.data.meta);
-        });
-      }
-    });
+  created() {
+    this.$store.commit("setSelectedFolder", 2);
   },
   data() {},
   methods: {
@@ -172,6 +163,9 @@ export default {
     },
   },
   computed: {
+    allFolders() {
+      return this.$store.state.foldersList;
+    },
     tableData() {
       return this.$store.state.fileTables;
     },

@@ -215,6 +215,25 @@ export function paperLock(data) {
     });
 }
 
+export function paperGetNote(data, callback) {
+    const url = host + "paper/getnote";
+    axios.post(url, {
+        'PaperID': data.PaperID,
+    }).then(res => {
+        callback(res);
+    });
+}
+
+export function paperModifyNote(data, callback) {
+    const url = host + "paper/modifynote";
+    axios.post(url, {
+        'Note': data.Note,
+        'PaperID': data.PaperID,
+    }).then(res => {
+        callback(res);
+    });
+}
+
 export function paperUnlock(data) {
     const url = host + "paper/unlock";
     axios.post(url, {
@@ -268,22 +287,22 @@ export function adminDeleteUser(data) {
     });
 }
 
-export function adminSettingsQuery(data) {
+export function adminSettingsQuery(data, callback) {
     const url = host + "admin/settings/query";
     axios.post(url, {
         'Key': data.Key,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
-export function adminSettingsModify(data) {
+export function adminSettingsModify(data, callback) {
     const url = host + "admin/settings/modify";
     axios.post(url, {
         'Key': data.Key,
         'Value': data.Value,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

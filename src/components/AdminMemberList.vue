@@ -55,7 +55,7 @@
           <el-table-column label="文件夹ID" prop="FID"> </el-table-column>
           <el-table-column label="文件夹名" prop="folderName">
           </el-table-column>
-          <el-table-column label="是否被拥有" prop="own"> </el-table-column>
+          <el-table-column label="是否为拥有者" prop="own"> </el-table-column>
         </el-table>
       </template>
     </el-table-column>

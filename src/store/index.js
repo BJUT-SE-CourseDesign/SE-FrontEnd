@@ -49,6 +49,8 @@ export default createStore({
             onNewFolderCallBack: null,
             choosePaper: false,
             ableChooseDelete: false,
+            currentPID: 0,
+            metaData: [],
         }
     },
     getters: {
@@ -61,6 +63,12 @@ export default createStore({
         }
     },
     mutations: {
+        writeMetaData: (state, currentMeta) => {
+            state.metaData = currentMeta;
+        },
+        changeCurrentPID: (state, currentPID) => {
+            state.currentPID = currentPID;
+        },
         changeChoosePaper: (state, chooseFlag) => {
             state.choosePaper = chooseFlag;
         },

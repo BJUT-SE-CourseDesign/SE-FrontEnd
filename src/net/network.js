@@ -60,7 +60,7 @@ export function movePDF(data, callback) {
 }
 
 export function metaData(data) {
-    const url = host + "paper/metadata";
+    const url = host + "paper/modifymetadata";
     axios.post(url, {
         'PaperID': data.paperID,
         'Title': data.title,
@@ -83,12 +83,12 @@ export function getMetaData(data, callback) {
     });
 }
 
-export function deletePaper(data) {
+export function deletePaper(data, callback) {
     const url = host + "paper/delete";
     axios.post(url, {
         'PaperID': data.paperID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

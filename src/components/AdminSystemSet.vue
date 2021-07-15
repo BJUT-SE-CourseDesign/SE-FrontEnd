@@ -57,21 +57,32 @@ export default {
   setup() {
     return {
       input0: ref(""),
-      input1: ref(""),
       input2: ref(""),
       input3: ref(""),
     };
   },
+  mounted() {
+    adminSettingsQuery(
+      {
+        Key: "RegisterEnabled",
+      },
+      (res) => {
+        console.log("query ");
+        console.log(res.data.value);
+        if (res.data.value == 1) this.allowRegister = true;
+        else this.allowRegister = false;
+      }
+    );
+  },
   data() {
     return {
+      allowRegister: false,
       table: false,
       dialog: false,
       loading: false,
       formLabelWidth: "80px",
       timer: null,
-      allowRegister: false,
       parameterValue0: "",
-      parameterValue1: "",
       parameterValue2: "",
       parameterValue3: "",
       systemParameters: [
@@ -96,14 +107,15 @@ export default {
       );
     },
     inputDown1() {
-      console.log("input down1");
+      console.log(1);
       adminSettingsModify(
         {
           Key: this.systemParameters[1],
-          Value: this.input1,
+          Value: this.allowRegister,
         },
         (res) => {
           console.log(res);
+          console.log("successfully!");
         }
       );
     },
@@ -157,6 +169,7 @@ export default {
       }
     },
   },
+  computed: {},
 };
 </script>
 

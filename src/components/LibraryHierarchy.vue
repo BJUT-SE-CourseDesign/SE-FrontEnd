@@ -20,7 +20,8 @@
           :key="folder.FID"
           :index="idx + 4"
         >
-          <i class="el-icon-folder"></i>
+          <i v-if="folder.own" class="el-icon-folder"></i>
+          <i v-if="!folder.own" class="el-icon-share"></i>
           <template #title
             ><span :ref="`folder${idx + 4}Span`">{{ folder.folderName }}</span>
             <input

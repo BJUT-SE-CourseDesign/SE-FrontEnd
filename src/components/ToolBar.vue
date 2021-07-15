@@ -242,10 +242,16 @@ export default {
       this.$refs.uploadButton.click();
     },
     uploadFile() {
-      this.uploadDialog = false;
+      const loading = this.$loading({
+        lock: true,
+        text: "正在上传",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       const fileObj = this.$refs.uploadButton.files[0];
       const folder = this.$store.state.foldersList[this.importFolderIndex];
       const folderID = folder.FID;
+
       importPDF(
         {
           folderID,
@@ -253,6 +259,15 @@ export default {
         },
         (res) => {
           console.log(res);
+          this.uploadDialog = false;
+          if (res.data.status === 200) {
+            this.$store.commit("setSelectedFolder", 2);
+            ElMessage.success({
+              message: "上传成功！",
+              type: "success",
+            });
+            loading.close();
+          }
         }
       );
     },

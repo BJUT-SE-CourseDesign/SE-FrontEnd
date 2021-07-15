@@ -1,10 +1,14 @@
 <template>
   <v-contextmenu ref="contextmenu">
     <v-contextmenu-submenu title="移动至">
-      <v-contextmenu-item v-for="folder in allFolders" :key="folder">{{
-        folder.folderName
-      }}</v-contextmenu-item>
+      <v-contextmenu-item
+        v-for="folder in allFolders"
+        :key="folder"
+        @click="movepdf(folder)"
+        >{{ folder.folderName }}</v-contextmenu-item
+      >
     </v-contextmenu-submenu>
+    <v-contextmenu-item @click="deletePaper">删除文献</v-contextmenu-item>
   </v-contextmenu>
 
   <div class="paper-container" style="flex: 1">
@@ -38,6 +42,7 @@
       v-contextmenu:contextmenu
       @cell-dblclick="doubleClickRow"
       @cell-click="signalClickRow"
+      @cell-mouse-enter="hoverRow"
     >
       <el-table-column prop="Type" width="60">
         <template #header>
@@ -68,6 +73,9 @@ import {
   unshareFolder,
   getFolderList,
   downloadLatestPaper,
+  movePDF,
+  deletePaper,
+  getMetaData,
 } from "../net/network";
 import { ElMessage } from "element-plus";
 
@@ -97,11 +105,48 @@ export default {
   },
   data() {},
   methods: {
+    deletePaper() {
+      deletePaper(
+        { paperID: this.$store.state.currentPID },
+        (res) => {
+          console.log(res.status);
+          this.$store.commit(
+            "setSelectedFolder",
+            this.$store.state.selectedFolder
+          );
+          ElMessage.success({
+            message: "删除成功",
+            type: "success",
+          });
+        }
+      );
+    },
     signalClickRow(row) {
-      console.log("signal click");
-      console.log(row);
-      
-      this.$store.commit("changeChoosePaper", { chooseFlag: true });
+      this.$store.commit("changeChoosePaper", true );
+      this.$store.commit("changeCurrentPID",  row.PID );
+      let currentMetaDate = {};
+      getMetaData(
+        {
+          paperID: row.PID,
+        },
+        (res) => {
+          console.log(res);
+          currentMetaDate = res.data.meta;
+          this.$store.commit("writeMetaData",currentMetaDate);
+        }
+      );
+    },
+    hoverRow(row) {
+      this.currentHover = row;
+    },
+    movepdf(folder) {
+      console.log(folder);
+      movePDF(
+        { newFolderID: folder.FID, paperID: this.currentHover.PID },
+        (res) => {
+          console.log(res);
+        }
+      );
     },
     doubleClickRow(row) {
       console.log(row);

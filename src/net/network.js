@@ -59,7 +59,7 @@ export function movePDF(data, callback) {
     });
 }
 
-export function metaData(data) {
+export function metaModifyData(data, callback) {
     const url = host + "paper/modifymetadata";
     axios.post(url, {
         'PaperID': data.paperID,
@@ -70,7 +70,7 @@ export function metaData(data) {
         'Keywords': data.Keywords,
         'Year': data.year,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
@@ -100,13 +100,22 @@ export function getAllPapers(callback) {
     });
 }
 
-export function queryFile(data) {
+export function queryFile(data, callback) {
     const url = host + "paper/query";
     axios.post(url, {
         'keywords': data.keywords,
         'query_type': data.queryType,
     }).then(res => {
-        console.log(res);
+        callback(res);
+    });
+}
+
+export function fuzzyQuery(data, callback) {
+    const url = host + "paper/fuzzyquery";
+    axios.post(url, {
+        'keywords': data.keywords,
+    }).then(res => {
+        callback(res);
     });
 }
 

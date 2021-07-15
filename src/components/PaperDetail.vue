@@ -3,10 +3,17 @@
     <el-tabs type="border-card" style="height: 100%">
       <el-tab-pane label="详情" key="详情">
         <div v-show="nullChoose" class="el-textNull">未选择文件</div>
-
-        <div v-for="item in detailItems" :key="item">
-          <div v-if="chooseFile" class="el-text">{{ item }}</div>
-        </div>
+        <el-input v-if="chooseFile" v-model="input0"></el-input>
+        <div v-if="chooseFile" class="el-text">作者</div>
+        <el-input v-if="chooseFile" v-model="input1"></el-input>
+        <div v-if="chooseFile" class="el-text">来源</div>
+        <el-input v-if="chooseFile" v-model="input2"></el-input>
+        <div v-if="chooseFile" class="el-text">摘要</div>
+        <el-input v-if="chooseFile" v-model="input3"></el-input>
+        <div v-if="chooseFile" class="el-text">关键词</div>
+        <el-input v-if="chooseFile" v-model="input4"></el-input>
+        <div v-if="chooseFile" class="el-text">年份</div>
+        <el-input v-if="chooseFile" v-model="input5"></el-input>
       </el-tab-pane>
       <el-tab-pane label="笔记" key="笔记">
         <el-input
@@ -31,15 +38,20 @@ export default {
   setup() {
     return {
       textarea: ref(""),
+      input0: ref(""),
+      input1: ref(""),
+      input2: ref(""),
+      input3: ref(""),
+      input4: ref(""),
+      input5: ref(""),
     };
   },
   name: "PaperDetail",
   components: {},
   data() {
     return {
-      nullChoose: true,
       detailTabs: ["详情", "笔记"],
-      detailItems: ["标题", "作者", "来源", "摘要", "关键词", "年份"],
+      detailItem: ["标题", "作者", "来源", "摘要", "关键词", "年份"],
     };
   },
   mounted() {
@@ -54,23 +66,24 @@ export default {
   },
   methods: {
     doneInput() {
-      paperModifyNote(
-        {
-          Note: this.textarea,
-          PaperID: this.$store.state.currentPID,
-        },
-        (res) => {
-          console.log("Paper modify note");
-          console.log(res);
-        }
-      );
+      console.log(this.$store.state.currentPID);
+      paperModifyNote({
+        Note: this.textarea,
+        PaperID: this.$store.state.currentPID,
+      });
     },
   },
   computed: {
     chooseFile() {
       let flag = this.$store.state.choosePaper;
-      console.log(flag);
       return flag;
+    },
+    nullChoose() {
+      if (this.$store.state.choosePaper) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
 };
@@ -84,7 +97,7 @@ export default {
 .el-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin: 2vh;
 }
 .el-textNull {

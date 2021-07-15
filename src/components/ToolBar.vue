@@ -105,7 +105,12 @@
     </div>
     <div style="flex: 1"></div>
     <div class="demo-input-suffix">
-      <el-input placeholder="   搜索..." v-model="searchInput">
+      <el-input
+        placeholder="   搜索..."
+        v-model="searchInput"
+        @blur="searchFiles"
+        clearable
+      >
         <template #prefix>
           <el-dropdown>
             <span class="el-dropdown-link">
@@ -166,6 +171,8 @@ import {
   importPDF,
   adminUserList,
   joinFolder,
+  fuzzyQuery,
+  getMetaData,
   deletePaper,
 } from "../net/network";
 
@@ -192,6 +199,24 @@ export default {
     };
   },
   methods: {
+    searchFiles() {
+      if (this.searchInput.length < 1) {
+         this.$store.commit(
+          "setSelectedFolder",
+          this.$store.state.selectedFolder
+        );
+      } else {
+        fuzzyQuery({ keywords: this.searchInput }, (res) => {
+          console.log(res);
+          this.$store.commit("setFileTable", []);
+          for (let pid of res.data.pids) {
+            getMetaData({ paperID: pid }, (res) => {
+              this.$store.commit("addFileTableRow", res.data.meta);
+            });
+          }
+        });
+      }
+   },
     deletePaper() {
       deletePaper({ paperID: this.$store.state.currentPID }, (res) => {
         console.log(res.status);

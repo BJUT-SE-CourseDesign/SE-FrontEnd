@@ -50,16 +50,6 @@
         </el-menu-item>
       </el-menu>
     </div>
-
-    <el-select v-model="filterValue" @change="changeFilterValue">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      >
-      </el-option>
-    </el-select>
   </div>
 </template>
 
@@ -83,9 +73,6 @@ export default {
     };
   },
   computed: {
-    filterValue() {
-      return this.$store.getters.filterValue.label;
-    },
     allFolders() {
       return this.$store.state.foldersList;
     },
@@ -97,9 +84,6 @@ export default {
     },
   },
   methods: {
-    changeFilterValue(index) {
-      this.$store.commit("changeFilterValue", index);
-    },
     newFolder() {
       this.$store.commit("switchOnNewFolder", true);
     },

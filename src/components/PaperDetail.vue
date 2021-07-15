@@ -51,7 +51,6 @@ export default {
   data() {
     return {
       detailTabs: ["详情", "笔记"],
-      detailItem: ["标题", "作者", "来源", "摘要", "关键词", "年份"],
     };
   },
   mounted() {

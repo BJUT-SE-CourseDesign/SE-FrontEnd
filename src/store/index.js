@@ -19,41 +19,9 @@ const filterOptions = [
     },
 ];
 
-const pdfIcon = require("../assets/pdf_icon.png");
-const docxIcon = require("../assets/docx_icon.png");
-const pptxIcon = require("../assets/pptx_icon.png");
-const xlsxIcon = require("../assets/xlsx_icon.png");
-
-// modify later
-function formatFileInfo(fileType, title, addedDate) {
-    switch (fileType) {
-        case "pdf":
-            fileType = pdfIcon;
-            break;
-        case "docx":
-            fileType = docxIcon;
-            break;
-        case "pptx":
-            fileType = pptxIcon;
-            break;
-        case "xlsx":
-            fileType = xlsxIcon;
-            break;
-        default:
-            break;
-    }
-    return {
-        ifRead: false,
-        author: "未知",
-        year: "未知",
-        fileType,
-        title,
-        addedDate
-    }
-}
 
 function loadPDFFile(instance, file) {
-    instance.loadDocument(file, { filename: file.name });
+    instance.loadDocument(file.url, { filename: file.title });
     const { docViewer } = instance;
     docViewer.on("documentLoaded", () => {
         // perform document operations
@@ -68,10 +36,9 @@ export default createStore({
             pageRouter: 0,
             logOrChange: true,
             tabIndex: 0,
-            openedTabs: ['我的文献库'],
+            openedTabs: [{ title: '我的文献库' }],
             selectedFolder: 2,
             filterIndex: 0,
-            fileObjs: [null],
             fileTables: [],
             pdfInstance: null,
             adminOrUser: false,
@@ -100,11 +67,16 @@ export default createStore({
                 state.pageRouter = router;
             }
         },
+        addTab: (state, tabConfig) => {
+            state.openedTabs.push(tabConfig);
+            state.tabIndex = state.openedTabs.length - 1;
+        },
         removeTab: (state, index) => {
             index = parseInt(index);
+            console.log(index)
             if (index !== 0) {
                 state.openedTabs.splice(index, 1);
-                state.fileObjs.splice(index, 1);
+                state.tabIndex = index - 1;
             }
         },
         switchTab: (state, index) => {
@@ -115,9 +87,10 @@ export default createStore({
                 }
                 state.tabIndex = index;
                 if (state.pdfInstance) {
+                    const instance = state.pdfInstance;
                     const tabIndex = state.tabIndex;
-                    const file = state.fileObjs[tabIndex];
-                    loadPDFFile(state.pdfInstance, file);
+                    const fileInfo = state.openedTabs[tabIndex];
+                    instance.loadDocument(fileInfo.url, { filename: fileInfo.title })
                 }
             }
         },
@@ -127,17 +100,16 @@ export default createStore({
                 state.filterIndex = index;
             }
         },
-        addFileObj: (state, fileInfo) => {
-            state.openedTabs.push(fileInfo.fileName);
-            state.fileObjs.push(fileInfo.fileObj);
-            const date = new Date();
-            const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-            state.fileTables.push(formatFileInfo(fileInfo.fileType, fileInfo.fileName, today));
+        setFileTable: (state, table) => {
+            state.fileTables = table;
+        },
+        addFileTableRow: (state, row) => {
+            state.fileTables.push(row);
         },
         setPDFInstance: (state, instance) => {
             state.pdfInstance = instance;
             const tabIndex = state.tabIndex;
-            const file = state.fileObjs[tabIndex];
+            const file = state.openedTabs[tabIndex];
             loadPDFFile(state.pdfInstance, file);
         },
         switchLogOrChange: (state, target) => {

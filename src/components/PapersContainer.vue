@@ -34,32 +34,24 @@
       max-height="100%"
       style="width: 100%"
       v-contextmenu:contextmenu
+      @cell-dblclick="doubleClickRow"
     >
-      <el-table-column prop="ifRead" width="30">
-        <template #header>
-          <div class="readPoint"></div>
-        </template>
-        <template #default="scope">
-          <div
-            :class="scope.row.ifRead ? 'haveReadPoint' : 'haveNotRead'"
-          ></div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="fileType" width="60">
+      <el-table-column prop="Type" width="60">
         <template #header>
           <i class="el-icon-document"></i>
         </template>
         <template #default="scope">
           <el-image
             style="width: 30px; height: 30px"
-            :src="scope.row.fileType"
+            :src="getIcon(scope.row.Type)"
             :fit="cover"
           ></el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="author" label="作者"> </el-table-column>
-      <el-table-column prop="title" label="标题"> </el-table-column>
-      <el-table-column prop="year" label="年份" sortable> </el-table-column>
+      <el-table-column prop="Authors" label="作者"> </el-table-column>
+      <el-table-column prop="Title" label="标题"> </el-table-column>
+      <el-table-column prop="Conference" label="期刊/会议"> </el-table-column>
+      <el-table-column prop="Year" label="年份" sortable> </el-table-column>
       <el-table-column prop="addedDate" label="添加日期" sortable>
       </el-table-column>
     </el-table>
@@ -68,8 +60,20 @@
 
 
 <script>
-import { shareFolder, unshareFolder, getFolderList } from "../net/network";
+import {
+  shareFolder,
+  unshareFolder,
+  getFolderList,
+  getAllPapers,
+  getMetaData,
+  downloadLatestPaper,
+} from "../net/network";
 import { ElMessage } from "element-plus";
+
+const pdfIcon = require("../assets/pdf_icon.png");
+const docxIcon = require("../assets/docx_icon.png");
+const pptxIcon = require("../assets/pptx_icon.png");
+const xlsxIcon = require("../assets/xlsx_icon.png");
 
 function copyToClip(content) {
   let aux = document.createElement("input");
@@ -87,8 +91,45 @@ function copyToClip(content) {
 export default {
   name: "PapersContainer",
   components: {},
+  mounted() {
+    getAllPapers((res) => {
+      let tables = [];
+      this.$store.commit("setFileTable", tables);
+      console.log(res);
+      for (let pid of res.data.pids) {
+        getMetaData({ paperID: pid }, (res) => {
+          this.$store.commit("addFileTableRow", res.data.meta);
+        });
+      }
+    });
+  },
   data() {},
   methods: {
+    doubleClickRow(row) {
+      console.log(row);
+      downloadLatestPaper({ paperID: row.PID }, (res) => {
+        console.log(res);
+        this.$store.commit("addTab", {
+          url: res.data.address,
+          title: row.Title,
+        });
+      });
+    },
+    getIcon(type) {
+      switch (type) {
+        case "pdf":
+          return pdfIcon;
+        case "docx":
+          return docxIcon;
+        case "pptx":
+          return pptxIcon;
+        case "xlsx":
+          return xlsxIcon;
+
+        default:
+          break;
+      }
+    },
     changePublic() {
       const data = this.$store.state;
       const index = data.selectedFolder;
@@ -132,9 +173,7 @@ export default {
   },
   computed: {
     tableData() {
-      let fileTables = this.$store.state.fileTables;
-      console.log(fileTables);
-      return fileTables;
+      return this.$store.state.fileTables;
     },
     folderName() {
       const data = this.$store.state;
@@ -160,7 +199,6 @@ export default {
       } else {
         shared = data.foldersList[index - 4].shared;
       }
-      console.log(data.foldersList[index - 4]);
       return shared === 1 ? true : false;
     },
   },
@@ -171,20 +209,6 @@ export default {
 .readPoint {
   width: 10px;
   height: 10px;
-  border-radius: 50%;
-  background: gray;
-}
-
-.haveReadPoint {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: greenyellow;
-}
-
-.haveNotRead {
-  width: 6px;
-  height: 6px;
   border-radius: 50%;
   background: gray;
 }

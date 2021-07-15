@@ -63,7 +63,6 @@ export default defineComponent({
             this.$store.commit("changeRouter", 1);
             this.$store.commit("changeUsername", this.username);
             userIsAdmin((res) => {
-              console.log(res);
               if (res.data.status === 200 && res.data.flag === true) {
                 this.$store.commit("logInAdmin", true);
               } else {

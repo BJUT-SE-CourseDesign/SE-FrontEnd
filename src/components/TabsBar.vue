@@ -8,9 +8,9 @@
     >
       <el-tab-pane
         v-for="(item, index) in tabs"
-        :key="item"
+        :key="index"
         :closable="index !== 0"
-        :label="item"
+        :label="item.title"
         :name="'' + index"
       />
     </el-tabs>

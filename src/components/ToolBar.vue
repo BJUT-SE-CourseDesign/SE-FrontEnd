@@ -29,7 +29,7 @@
       </el-form-item>
     </el-form>
   </el-dialog>
-  <el-row>
+  <div class="bar-row">
     <div class="el-bar">
       <div class="el-upload__tip">
         <el-button-group>
@@ -123,7 +123,7 @@
     </div>
     <div style="flex: 1"></div>
     <div class="demo-input-suffix">
-      <el-input placeholder="   搜索..." v-model="input2">
+      <el-input placeholder="   搜索..." v-model="searchInput">
         <template #prefix>
           <el-dropdown>
             <span class="el-dropdown-link">
@@ -132,10 +132,21 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item>作者</el-dropdown-item>
-                <el-dropdown-item>标题</el-dropdown-item>
-                <el-dropdown-item>年份</el-dropdown-item>
-                <el-dropdown-item>期刊</el-dropdown-item>
+                <el-dropdown-item @click="this.searchInput += ' 作者：'"
+                  >作者</el-dropdown-item
+                >
+                <el-dropdown-item @click="this.searchInput += ' 标题：'"
+                  >标题</el-dropdown-item
+                >
+                <el-dropdown-item @click="this.searchInput += ' 年份：'"
+                  >年份</el-dropdown-item
+                >
+                <el-dropdown-item @click="this.searchInput += ' 期刊：'"
+                  >期刊</el-dropdown-item
+                >
+                <el-dropdown-item @click="this.searchInput += ' 关键词：'"
+                  >关键词</el-dropdown-item
+                >
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -163,7 +174,7 @@
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-  </el-row>
+  </div>
 </template>
 
 <script>
@@ -194,6 +205,7 @@ export default {
       uploadDialog: false,
       importFolderIndex: 0,
       labelWidth: "120px",
+      searchInput: "",
     };
   },
   methods: {
@@ -232,10 +244,6 @@ export default {
     uploadFile() {
       this.uploadDialog = false;
       const fileObj = this.$refs.uploadButton.files[0];
-      let fileName = fileObj.name.split(".");
-      const fileType = fileName[fileName.length - 1];
-      fileName = fileName.slice(0, fileName.length - 1).join("");
-      this.$store.commit("addFileObj", { fileObj, fileName, fileType });
       const folder = this.$store.state.foldersList[this.importFolderIndex];
       const folderID = folder.FID;
       importPDF(
@@ -358,5 +366,16 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-right: 6px;
+}
+
+.demo-input-suffix {
+  width: 300px;
+  margin-right: 30px;
+}
+
+.bar-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 </style>

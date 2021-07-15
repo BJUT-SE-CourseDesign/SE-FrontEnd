@@ -130,9 +130,9 @@ export default {
           paperID: row.PID,
         },
         (res) => {
-          console.log(res);
           currentMetaDate = res.data.meta;
-          this.$store.commit("writeMetaData",currentMetaDate);
+          this.$store.commit("writeMetaData", currentMetaDate);
+          console.log(currentMetaDate);
         }
       );
     },

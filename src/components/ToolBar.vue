@@ -224,7 +224,7 @@ export default {
           "setSelectedFolder",
           this.$store.state.selectedFolder
         );
-      ElMessage.success({
+        ElMessage.success({
           message: "删除成功",
           type: "success",
         });

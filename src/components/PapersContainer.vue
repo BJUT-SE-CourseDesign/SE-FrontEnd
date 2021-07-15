@@ -133,6 +133,7 @@ export default {
   computed: {
     tableData() {
       let fileTables = this.$store.state.fileTables;
+      console.log(fileTables);
       return fileTables;
     },
     folderName() {

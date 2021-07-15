@@ -82,7 +82,7 @@
           <el-dialog title="加入共享文件夹" v-model="dialogFormVisible">
             <el-form :model="form">
               <el-form-item label="请输入文件夹邀请码">
-                <el-input v-model="inputFolder" maxlength="20"></el-input>
+                <el-input v-model="inputFolder" maxlength="50"></el-input>
                 <div v-if="error" class="error">{{ errorInfo }}</div>
               </el-form-item>
             </el-form>
@@ -201,6 +201,8 @@ export default {
       console.log("string");
       console.log(this.inputFolder);
       joinFolder({ fuuID: this.inputFolder }, (res) => {
+        console.log(res);
+        console.log(res.data.status);
         if (res.data.status === 200) {
           console.log("join successfully!");
           ElMessage.success({
@@ -209,7 +211,7 @@ export default {
           });
           setTimeout(() => {
             this.$store.commit("changeRouter", 1);
-            this.$store.commit("switchLogOrChange", false);
+            this.dialogFormVisible = false;
           }, 2000);
         } else if (res.data.status === 201) {
           this.error = true;
@@ -222,7 +224,6 @@ export default {
           this.errorInfo = "加入失败，此文件夹已经不被共享或存在";
         }
       });
-      this.dialogFormVisible = false;
     },
     addSharedFolder() {},
     mockUploadFile: function () {

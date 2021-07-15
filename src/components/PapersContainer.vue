@@ -40,6 +40,7 @@
       style="width: 100%"
       v-contextmenu:contextmenu
       @cell-dblclick="doubleClickRow"
+      @cell-click="signalClickRow"
       @cell-mouse-enter="hoverRow"
     >
       <el-table-column prop="Type" width="60">
@@ -101,6 +102,11 @@ export default {
   },
   data() {},
   methods: {
+    signalClickRow(row) {
+      console.log("signal click");
+      console.log(row);
+      this.$store.commit("changeChoosePaper", { chooseFlag: true });
+      },
     hoverRow(row) {
       this.currentHover = row;
     },

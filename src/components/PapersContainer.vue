@@ -60,7 +60,8 @@
       <el-table-column prop="author" label="作者"> </el-table-column>
       <el-table-column prop="title" label="标题"> </el-table-column>
       <el-table-column prop="year" label="年份" sortable> </el-table-column>
-      <el-table-column prop="addedDate" label="添加日期"> </el-table-column>
+      <el-table-column prop="addedDate" label="添加日期" sortable>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -192,6 +193,7 @@ export default {
   flex-direction: column;
   flex: 1;
   width: 1%;
+  height: 100%;
 }
 
 .folder-bar {

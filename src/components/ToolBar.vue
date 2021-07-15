@@ -11,7 +11,7 @@
     <el-form :model="form">
       <el-form-item :label-width="labelWidth">
         <el-button type="primary" @click="mockUploadFile"
-          >上传<i class="el-icon-upload el-icon--right"></i
+          >上传文件<i class="el-icon-upload el-icon--right"></i
         ></el-button>
         <span> 至 </span>
         <el-select
@@ -34,18 +34,17 @@
       <div class="el-upload__tip">
         <el-button-group>
           <el-button
-            type="success"
             icon="el-icon-document-add"
-            size="small"
+            size="mini"
             @click="
               uploadDialog = true;
               importFolderIndex = 0;
             "
           ></el-button>
           <el-button
-            type="danger"
             icon="el-icon-document-remove"
-            size="small"
+            size="mini"
+            plain
             disabled
           ></el-button>
         </el-button-group>
@@ -56,13 +55,15 @@
           <el-button
             type="success"
             icon="el-icon-folder-add"
-            size="small"
+            size="mini"
+            plain
             @click="newFolder"
           ></el-button>
           <el-button
             type="danger"
             icon="el-icon-folder-remove"
-            size="small"
+            size="mini"
+            plain
             :disabled="selectedFolder <= 3"
             @click="deleteFolder"
           ></el-button>
@@ -73,8 +74,37 @@
         <el-button-group>
           <el-button
             type="success"
+            icon="el-icon-circle-plus-outline"
+            size="mini"
+            plain
+            @click="dialogFormVisible = true"
+          ></el-button>
+          <el-dialog title="加入共享文件夹" v-model="dialogFormVisible">
+            <el-form :model="form">
+              <el-form-item label="请输入文件夹邀请码">
+                <el-input v-model="inputFolder" maxlength="20"></el-input>
+                <div v-if="error" class="error">{{ errorInfo }}</div>
+              </el-form-item>
+            </el-form>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="joinSharedFolder"
+                  >确 定</el-button
+                >
+              </span>
+            </template>
+          </el-dialog>
+        </el-button-group>
+        加入共享
+      </div>
+      <div class="el-upload__tip">
+        <el-button-group>
+          <el-button
+            type="success"
             icon="el-icon-refresh"
-            size="small"
+            size="mini"
+            plain
           ></el-button>
         </el-button-group>
         同步
@@ -84,7 +114,8 @@
           <el-button
             type="info"
             icon="el-icon-question"
-            size="small"
+            size="mini"
+            plain
           ></el-button>
         </el-button-group>
         帮助
@@ -126,12 +157,29 @@
 </template>
 
 <script>
-import { deleteFolder, getFolderList, importPDF } from "../net/network";
+import {
+  deleteFolder,
+  getFolderList,
+  importPDF,
+  adminUserList,
+  joinFolder,
+} from "../net/network";
+
+import { ref } from "vue";
+import { ElMessage } from "element-plus";
 
 export default {
+  setup() {
+    return {
+      inputFolder: ref(""),
+    };
+  },
   name: "ToolBar",
   data() {
     return {
+      error: false,
+      errorInfo: "",
+      dialogFormVisible: false,
       arrow: "el-icon-arrow-down",
       uploadDialog: false,
       importFolderIndex: 0,
@@ -139,6 +187,34 @@ export default {
     };
   },
   methods: {
+    joinSharedFolder() {
+      console.log("string");
+      console.log(this.inputFolder);
+      joinFolder({ fuuID: this.inputFolder }, (res) => {
+        if (res.data.status === 200) {
+          console.log("join successfully!");
+          ElMessage.success({
+            message: "恭喜你，修改成功！（2s后返回主界面）",
+            type: "success",
+          });
+          setTimeout(() => {
+            this.$store.commit("changeRouter", 1);
+            this.$store.commit("switchLogOrChange", false);
+          }, 2000);
+        } else if (res.data.status === 201) {
+          this.error = true;
+          this.errorInfo = "加入失败，您已经在此共享文件夹中了";
+        } else if (res.data.status === 202) {
+          this.error = true;
+          this.errorInfo = "加入失败，您是这个文件夹的主人";
+        } else if (res.data.status === 203) {
+          this.error = true;
+          this.errorInfo = "加入失败，此文件夹已经不被共享或存在";
+        }
+      });
+      this.dialogFormVisible = false;
+    },
+    addSharedFolder() {},
     mockUploadFile: function () {
       this.$refs.uploadButton.click();
     },
@@ -171,6 +247,16 @@ export default {
     },
     adminIn() {
       this.$store.commit("changeRouter", 2);
+      adminUserList((res) => {
+        let dictUsersList = [];
+        for (let i = 0; i < res.data.user_list.length; i++) {
+          dictUsersList.push({
+            userID: res.data.user_list[i],
+          });
+        }
+        this.$store.commit("getAllUsers", dictUsersList);
+        console.log(dictUsersList);
+      });
     },
     newFolder() {
       this.$store.commit("switchOnNewFolder", true);

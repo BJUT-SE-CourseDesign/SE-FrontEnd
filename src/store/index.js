@@ -76,6 +76,8 @@ export default createStore({
             pdfInstance: null,
             adminOrUser: false,
             foldersList: [],
+            usersList: [],
+            userFolder: [],
             onNewFolder: false,
             onNewFolderCallBack: null,
         }
@@ -148,6 +150,9 @@ export default createStore({
         getAllFolders: (state, foldersList) => {
             state.foldersList = foldersList;
         },
+        getAllUsers: (state, usersList) => {
+            state.usersList = usersList;
+        },
         switchOnNewFolder: (state, onOrOff) => {
             if (onOrOff) {
                 setTimeout(state.onNewFolderCallBack, 100);
@@ -159,6 +164,9 @@ export default createStore({
         },
         setSelectedFolder: (state, index) => {
             state.selectedFolder = index;
+        },
+        displayUserFolder: (state, userFolder) => {
+            state.userFolder = userFolder;
         }
     },
 });

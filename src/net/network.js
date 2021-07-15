@@ -138,12 +138,12 @@ export function addFolder(data, callback) {
     });
 }
 
-export function joinFolder(data) {
+export function joinFolder(data, callback) {
     const url = host + "folder/join";
     axios.post(url, {
         'FUUID': data.fuuID,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
@@ -241,11 +241,11 @@ export function userIsAdmin(callback) {
     });
 }
 
-export function adminUserList() {
+export function adminUserList(callback) {
     const url = host + "admin/user/list";
-    axios.post(url, {
+    axios.get(url, {
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
@@ -301,5 +301,14 @@ export function adminFolderQueryShared(data) {
         'FolderID': data.folderID,
     }).then(res => {
         console.log(res);
+    });
+}
+
+export function adminFolderList(data, callback) {
+    const url = host + "admin/folder/list";
+    axios.get(url, {
+        'username': data.username,
+    }).then(res => {
+        callback(res);
     });
 }

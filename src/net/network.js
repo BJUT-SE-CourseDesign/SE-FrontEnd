@@ -249,13 +249,13 @@ export function adminUserList(callback) {
     });
 }
 
-export function adminModifyUserPassword(data) {
+export function adminModifyUserPassword(data, callback) {
     const url = host + "admin/user/modifypassword";
     axios.post(url, {
         'username': data.username,
         'newPassword': data.newPassword,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
@@ -306,7 +306,7 @@ export function adminFolderQueryShared(data) {
 
 export function adminFolderList(data, callback) {
     const url = host + "admin/folder/list";
-    axios.get(url, {
+    axios.post(url, {
         'username': data.username,
     }).then(res => {
         callback(res);

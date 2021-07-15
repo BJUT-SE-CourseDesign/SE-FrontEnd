@@ -122,15 +122,25 @@
       </div>
     </div>
     <div style="flex: 1"></div>
-    <div class="el-search">
-      <div class="demo-input-suffix">
-        <el-input
-          placeholder="请输入内容"
-          prefix-icon="el-icon-search"
-          v-model="input2"
-        >
-        </el-input>
-      </div>
+    <div class="demo-input-suffix">
+      <el-input placeholder="   搜索..." v-model="input2">
+        <template #prefix>
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              <i class="el-icon-search"></i>
+              <i class="el-icon-arrow-down"></i>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>作者</el-dropdown-item>
+                <el-dropdown-item>标题</el-dropdown-item>
+                <el-dropdown-item>年份</el-dropdown-item>
+                <el-dropdown-item>期刊</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
+      </el-input>
     </div>
 
     <el-dropdown>

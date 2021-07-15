@@ -77,7 +77,6 @@ export default createStore({
             adminOrUser: false,
             foldersList: [],
             usersList: [],
-            userFolder: [],
             onNewFolder: false,
             onNewFolderCallBack: null,
         }
@@ -165,8 +164,5 @@ export default createStore({
         setSelectedFolder: (state, index) => {
             state.selectedFolder = index;
         },
-        displayUserFolder: (state, userFolder) => {
-            state.userFolder = userFolder;
-        }
     },
 });

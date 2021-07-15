@@ -1,5 +1,7 @@
 <template>
-  <el-button type="primary" @click="table = true">修改系统设置</el-button>
+  <el-button type="primary" @click="table = true" style="margin-right: 80px"
+    >修改系统设置</el-button
+  >
   <el-drawer title="系统设置" v-model="table" direction="rtl" size="22%">
     <el-table :data="gridData">
       <el-table-column

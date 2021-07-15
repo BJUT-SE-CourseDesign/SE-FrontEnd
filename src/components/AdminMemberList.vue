@@ -1,31 +1,39 @@
 <template>
-  <el-table :data="this.$store.state.usersList" style="width: 50%">
+  <el-dialog title="修改密码" v-model="dialogFormVisible">
+    <el-form :model="form">
+      <el-form-item label="新密码">
+        <el-input
+          maxlength="10"
+          v-model="inputPassword"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
+    </el-form>
+    <span class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button
+        type="primary"
+        @click="passwordEdit(userindexTemp, userDataTemp)"
+        >确 定</el-button
+      >
+    </span>
+  </el-dialog>
+
+  <el-table
+    :data="this.$store.state.usersList"
+    style="width: 80%; overflow: auto"
+    @expand-change="fetchFolders"
+  >
     <el-table-column label="用户名称" prop="userID"> </el-table-column>
     <el-table-column label="修改密码" prop="editPassword">
-      <el-button
-        @click="recordPassword(scope.$index, this.$store.state.usersList)"
-        ><i class="el-icon-edit"></i
-      ></el-button>
-      <el-dialog title="修改密码" v-model="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="新密码">
-            <el-input
-              maxlength="10"
-              v-model="inputPassword"
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-        <span class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button
-            type="primary"
-            @click="passwordEdit(userindexTemp, userDataTemp)"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
+      <template #default="scope">
+        <el-button
+          @click="recordPassword(scope.$index, this.$store.state.usersList)"
+          ><i class="el-icon-edit"></i
+        ></el-button>
+      </template>
     </el-table-column>
+
     <el-table-column label="删除用户">
       <template #default="scope">
         <el-button
@@ -37,24 +45,20 @@
         </el-button>
       </template>
     </el-table-column>
-    <el-table-column label="查看文件夹" type="expand" width="120vh">
-      <el-button
-        @click="displayFolders(scope.$index, this.$store.state.usersList)"
-        >获取文件夹</el-button
-      >
-      <el-table :data="this.$store.state.userFolder">
-        <el-table-column label="文件夹名" prop="userFolderName">
-        </el-table-column>
-        <el-table-column label="是否被拥有" prop="userOwn"> </el-table-column>
-      </el-table>
+    <el-table-column label="查看文件夹" type="expand" width="120px">
+      <template #default="scope">
+        <el-table :data="currentExpandedFolders[scope.row.userID]">
+          <el-table-column label="文件夹ID" prop="FID"> </el-table-column>
+          <el-table-column label="文件夹名" prop="folderName">
+          </el-table-column>
+          <el-table-column label="是否被拥有" prop="own"> </el-table-column>
+        </el-table>
+      </template>
     </el-table-column>
   </el-table>
 </template>
 
 <style>
-/* .el-table__expand-column .cell {
-  display: none;
-} */
 .demo-table-expand {
   font-size: 0;
 }
@@ -77,6 +81,7 @@ import {
 } from "../net/network";
 
 import { ref } from "vue";
+import { ElMessage } from "element-plus";
 
 export default {
   setup() {
@@ -100,9 +105,16 @@ export default {
         resource: "",
         desc: "",
       },
+      currentExpandedFolders: {},
     };
   },
   methods: {
+    fetchFolders(row) {
+      adminFolderList({ username: row.userID }, (res) => {
+        console.log(res.data);
+        this.currentExpandedFolders[row.userID] = res.data.folder_list;
+      });
+    },
     recordPassword(index, rows) {
       console.log("recording");
       console.log(index);
@@ -123,18 +135,15 @@ export default {
             console.log("modify password");
             if (res.data.result === true) {
               console.log("sucessfully");
+              ElMessage.success({
+                message: "修改成功！",
+                type: "success",
+              });
             }
           }
         );
       console.log(rows);
       console.log(index);
-    },
-    displayFolders(index, rows) {
-      console.log("check folder ing!!");
-      console.log(rows[index]["userID"]);
-      adminFolderList({ username: rows[index]["userID"] }, (res) => {
-        this.$store.commit("displayUserFolder", res.data.folder_list);
-      });
     },
     deleteRow(index, rows) {
       console.log(rows[index]["userID"]);

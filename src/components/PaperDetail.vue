@@ -3,12 +3,10 @@
     <el-tabs type="border-card" style="height: 100%">
       <el-tab-pane label="详情" key="详情">
         <div v-show="nullChoose" class="el-textNull">未选择文件</div>
-        <div v-if="chooseFile" class="el-text">标题</div>
-        <div v-if="chooseFile" class="el-text">作者</div>
-        <div v-if="chooseFile" class="el-text">来源</div>
-        <div v-if="chooseFile" class="el-text">摘要</div>
-        <div v-if="chooseFile" class="el-text">关键词</div>
-        <div v-if="chooseFile" class="el-text">年份</div>
+
+        <div v-for="item in detailItems" :key="item">
+          <div v-if="chooseFile" class="el-text">{{ item }}</div>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="笔记" key="笔记">
         <el-input
@@ -16,7 +14,7 @@
           :rows="16"
           placeholder="请输入您的笔记"
           v-model="textarea"
-          @change="downInput"
+          @change="doneInput"
         >
         </el-input>
       </el-tab-pane>
@@ -27,6 +25,7 @@
 
 <script>
 import { ref } from "vue";
+import { paperModifyNote, paperGetNote } from "../net/network";
 
 export default {
   setup() {
@@ -40,15 +39,36 @@ export default {
     return {
       nullChoose: true,
       detailTabs: ["详情", "笔记"],
+      detailItems: ["标题", "作者", "来源", "摘要", "关键词", "年份"],
     };
   },
+  mounted() {
+    paperGetNote(
+      {
+        PaperID: this.$store.state.currentPID,
+      },
+      (res) => {
+        this.textarea = res.data.note;
+      }
+    );
+  },
   methods: {
-    downInput() {},
+    doneInput() {
+      paperModifyNote(
+        {
+          Note: this.textarea,
+          PaperID: this.$store.state.currentPID,
+        },
+        (res) => {
+          console.log("Paper modify note");
+          console.log(res);
+        }
+      );
+    },
   },
   computed: {
     chooseFile() {
       let flag = this.$store.state.choosePaper;
-      console.log("chooseFile");
       console.log(flag);
       return flag;
     },

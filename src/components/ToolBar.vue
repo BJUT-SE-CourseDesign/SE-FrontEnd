@@ -45,7 +45,8 @@
             icon="el-icon-document-remove"
             size="mini"
             plain
-            disabled
+            :disabled="!choosePaper"
+            @click="deletePaper"
           ></el-button>
         </el-button-group>
         文件操作
@@ -53,14 +54,12 @@
       <div class="el-upload__tip">
         <el-button-group>
           <el-button
-            type="success"
             icon="el-icon-folder-add"
             size="mini"
             plain
             @click="newFolder"
           ></el-button>
           <el-button
-            type="danger"
             icon="el-icon-folder-remove"
             size="mini"
             plain
@@ -73,7 +72,6 @@
       <div class="el-upload__tip">
         <el-button-group>
           <el-button
-            type="success"
             icon="el-icon-circle-plus-outline"
             size="mini"
             plain
@@ -100,23 +98,7 @@
       </div>
       <div class="el-upload__tip">
         <el-button-group>
-          <el-button
-            type="success"
-            icon="el-icon-refresh"
-            size="mini"
-            plain
-          ></el-button>
-        </el-button-group>
-        同步
-      </div>
-      <div class="el-upload__tip">
-        <el-button-group>
-          <el-button
-            type="info"
-            icon="el-icon-question"
-            size="mini"
-            plain
-          ></el-button>
+          <el-button icon="el-icon-question" size="mini" plain></el-button>
         </el-button-group>
         帮助
       </div>
@@ -191,6 +173,7 @@ import {
   joinFolder,
   fuzzyQuery,
   getMetaData,
+  deletePaper,
 } from "../net/network";
 
 import { ref } from "vue";
@@ -218,7 +201,7 @@ export default {
   methods: {
     searchFiles() {
       if (this.searchInput.length < 1) {
-        this.$store.commit(
+         this.$store.commit(
           "setSelectedFolder",
           this.$store.state.selectedFolder
         );
@@ -233,6 +216,19 @@ export default {
           }
         });
       }
+   },
+    deletePaper() {
+      deletePaper({ paperID: this.$store.state.currentPID }, (res) => {
+        console.log(res.status);
+        this.$store.commit(
+          "setSelectedFolder",
+          this.$store.state.selectedFolder
+        );
+      ElMessage.success({
+          message: "删除成功",
+          type: "success",
+        });
+      });
     },
     joinSharedFolder() {
       console.log("string");
@@ -243,7 +239,7 @@ export default {
         if (res.data.status === 200) {
           console.log("join successfully!");
           ElMessage.success({
-            message: "恭喜你，修改成功！（2s后返回主界面）",
+            message: "恭喜你，加入共享文件夹成功！（2s后返回主界面）",
             type: "success",
           });
           setTimeout(() => {
@@ -361,6 +357,10 @@ export default {
     },
   },
   computed: {
+    choosePaper() {
+      console.log(this.$store.state.choosePaper);
+      return this.$store.state.choosePaper;
+    },
     username() {
       return this.$store.state.username;
     },

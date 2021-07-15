@@ -75,6 +75,15 @@ export function metaData(data) {
     });
 }
 
+export function getMetaData(data, callback) {
+    const url = host + "paper/getmetadata";
+    axios.post(url, {
+        'PaperID': data.paperID
+    }).then(res => {
+        callback(res);
+    });
+}
+
 export function deletePaper(data) {
     const url = host + "paper/delete";
     axios.post(url, {
@@ -84,11 +93,11 @@ export function deletePaper(data) {
     });
 }
 
-export function getAllPaper() {
+export function getAllPapers(callback) {
     const url = host + "paper/all";
     axios.get(url, {
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 
@@ -102,15 +111,25 @@ export function queryFile(data) {
     });
 }
 
-export function downloadPaper(data) {
+export function downloadPaper(data, callback) {
     const url = host + "paper/download";
     axios.post(url, {
         'PaperID': data.paperID,
         'Version': data.version,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
+
+export function downloadLatestPaper(data, callback) {
+    const url = host + "paper/downloadlatest";
+    axios.post(url, {
+        'PaperID': data.paperID,
+    }).then(res => {
+        callback(res);
+    });
+}
+
 
 export function uploadPaper(data) {
     const url = host + "paper/upload";
@@ -124,6 +143,15 @@ export function uploadPaper(data) {
 export function getFolderList(callback) {
     const url = host + "folder/list";
     axios.get(url).then(res => {
+        callback(res);
+    });
+}
+
+export function getFolderPapers(data, callback) {
+    const url = host + "folder/listpaper";
+    axios.post(url, {
+        "FolderID": data.folderID
+    }).then(res => {
         callback(res);
     });
 }

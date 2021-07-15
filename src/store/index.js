@@ -1,26 +1,6 @@
 import { createStore } from "vuex";
 import { getFolderPapers, getMetaData, getAllPapers } from "../net/network";
 
-const filterOptions = [
-    {
-        value: 0,
-        label: "按文献名筛选",
-    },
-    {
-        value: 1,
-        label: "按作者筛选",
-    },
-    {
-        value: 2,
-        label: "按标签筛选",
-    },
-    {
-        value: 3,
-        label: "按出版社筛选",
-    },
-];
-
-
 function loadPDFFile(instance, file) {
     instance.loadDocument(file.url, { filename: file.title });
     const { docViewer } = instance;
@@ -51,15 +31,7 @@ export default createStore({
             ableChooseDelete: false,
         }
     },
-    getters: {
-        allFilterValues: () => {
-            return filterOptions;
-        },
-
-        filterValue: state => {
-            return filterOptions[state.filterIndex];
-        }
-    },
+    getters: {},
     mutations: {
         changeChoosePaper: (state, chooseFlag) => {
             state.choosePaper = chooseFlag;
@@ -97,12 +69,6 @@ export default createStore({
                     const fileInfo = state.openedTabs[tabIndex];
                     instance.loadDocument(fileInfo.url, { filename: fileInfo.title })
                 }
-            }
-        },
-        changeFilterValue: (state, index) => {
-            index = parseInt(index);
-            if (index >= 0 && index < filterOptions.length) {
-                state.filterIndex = index;
             }
         },
         setFileTable: (state, table) => {

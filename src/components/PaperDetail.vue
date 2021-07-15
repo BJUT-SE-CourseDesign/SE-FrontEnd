@@ -10,14 +10,30 @@
         <div v-show="chooseFile" class="el-text">关键词</div>
         <div v-show="chooseFile" class="el-text">年份</div>
       </el-tab-pane>
-      <el-tab-pane label="笔记" key="笔记"> </el-tab-pane>
+      <el-tab-pane label="笔记" key="笔记">
+        <el-input
+          type="textarea"
+          :rows="16"
+          placeholder="请输入您的笔记"
+          v-model="textarea"
+          @change="downInput"
+        >
+        </el-input>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 
 <script>
+import { ref } from "vue";
+
 export default {
+  setup() {
+    return {
+      textarea: ref(""),
+    };
+  },
   name: "PaperDetail",
   components: {},
   data() {
@@ -27,13 +43,18 @@ export default {
       detailTabs: ["详情", "笔记"],
     };
   },
-  methods: {},
+  methods: {
+    downInput() {
+      
+    },
+  },
 };
 </script>
 
 <style scoped>
 .paper-detail {
   height: 100%;
+  width: 20vw;
 }
 .el-text {
   display: flex;

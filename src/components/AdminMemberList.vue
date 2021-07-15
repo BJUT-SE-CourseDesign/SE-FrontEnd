@@ -1,4 +1,8 @@
 <template>
+  <div class="header">
+    <el-page-header @back="backToMainPage" content="系统设置"> </el-page-header>
+  </div>
+
   <el-dialog title="修改密码" v-model="dialogFormVisible">
     <el-form :model="form">
       <el-form-item label="新密码">
@@ -59,6 +63,11 @@
 </template>
 
 <style>
+.el-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 .demo-table-expand {
   font-size: 0;
 }
@@ -70,6 +79,14 @@
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 0 0 40px 120px;
 }
 </style>
 
@@ -109,10 +126,24 @@ export default {
     };
   },
   methods: {
+    backToMainPage() {
+      this.$store.commit("changeRouter", 1);
+    },
     fetchFolders(row) {
       adminFolderList({ username: row.userID }, (res) => {
-        console.log(res.data);
+        console.log(res.data.folder_list);
         this.currentExpandedFolders[row.userID] = res.data.folder_list;
+        let tempExpandFolders = this.currentExpandedFolders[row.userID];
+        for (let i = 0; i < tempExpandFolders.length; i++) {
+          console.log(i);
+          console.log(tempExpandFolders[i].own);
+          if (tempExpandFolders[i].own == true) {
+            tempExpandFolders[i].own = "是";
+          } else {
+            tempExpandFolders[i].own = "否";
+          }
+        }
+        this.currentExpandedFolders[row.userID] = tempExpandFolders;
       });
     },
     recordPassword(index, rows) {

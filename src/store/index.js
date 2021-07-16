@@ -31,6 +31,8 @@ export default createStore({
             ableChooseDelete: false,
             currentPID: 0,
             metaData: [],
+            prePID: 0,
+            loadMeta: null,
         }
     },
     getters: {},
@@ -140,5 +142,8 @@ export default createStore({
                 }
             }
         },
+        setLoadMeta: (state, func) => {
+            state.loadMeta = func;
+        }
     },
 });

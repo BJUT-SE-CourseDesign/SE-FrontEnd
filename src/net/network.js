@@ -59,7 +59,7 @@ export function movePDF(data, callback) {
     });
 }
 
-export function metaData(data) {
+export function metaModifyData(data, callback) {
     const url = host + "paper/modifymetadata";
     axios.post(url, {
         'PaperID': data.paperID,
@@ -70,7 +70,7 @@ export function metaData(data) {
         'Keywords': data.Keywords,
         'Year': data.year,
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

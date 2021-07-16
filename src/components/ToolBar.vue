@@ -246,7 +246,6 @@ export default {
           }
         );
       };
-
       sendData();
     },
     searchFiles() {

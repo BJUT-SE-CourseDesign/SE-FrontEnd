@@ -1,9 +1,10 @@
 <template>
   <div class="login-part">
-    <div class="text">
-      <div class="title">论文通</div>
-      <div class="subtitle">您的一站式论文管理系统</div>
-    </div>
+    <el-image
+      :fit="contain"
+      :src="require('../assets/login.png')"
+      style="width: 400px; margin: 40px"
+    ></el-image>
     <div class="input-div">
       <el-input
         placeholder="用户名"

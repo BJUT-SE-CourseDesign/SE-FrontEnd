@@ -102,6 +102,17 @@
         </el-button-group>
         帮助
       </div>
+      <div v-if="tabIndex > 0" class="el-upload__tip">
+        <el-button-group>
+          <el-button
+            icon="el-icon-refresh"
+            size="mini"
+            plain
+            @click="sync"
+          ></el-button>
+        </el-button-group>
+        同步
+      </div>
     </div>
     <div style="flex: 1"></div>
     <div class="demo-input-suffix">
@@ -174,6 +185,7 @@ import {
   fuzzyQuery,
   getMetaData,
   deletePaper,
+  uploadPaper,
 } from "../net/network";
 
 import { ref } from "vue";
@@ -199,6 +211,43 @@ export default {
     };
   },
   methods: {
+    sync() {
+      const tabIdx = this.$store.state.tabIndex;
+      const PID = this.$store.state.openedTabs[tabIdx].PID;
+      const instance = this.$store.state.pdfInstance;
+      const { docViewer, annotManager, CoreControls } = instance;
+
+      const sendData = async () => {
+        const loading = this.$loading({
+          lock: true,
+          text: "正在同步",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)",
+        });
+        const doc = docViewer.getDocument();
+        const xfdfString = await annotManager.exportAnnotations();
+        const saveOptions = CoreControls.SaveOptions;
+        const options = {
+          xfdfString,
+          flags: saveOptions.LINEARIZED,
+          downloadType: "pdf",
+        };
+        const data = await doc.getFileData(options);
+        const arr = new Uint8Array(data);
+        const blob = new Blob([arr], { type: "application/pdf" });
+        uploadPaper(
+          {
+            paperID: PID,
+            file: blob,
+          },
+          (res) => {
+            console.log(res);
+            loading.close();
+          }
+        );
+      };
+      sendData();
+    },
     searchFiles() {
       if (this.searchInput.length < 1) {
         this.$store.commit(
@@ -287,8 +336,8 @@ export default {
               message: "上传成功！",
               type: "success",
             });
-            loading.close();
           }
+          loading.close();
         }
       );
     },
@@ -378,6 +427,9 @@ export default {
     },
     folders() {
       return this.$store.state.foldersList;
+    },
+    tabIndex() {
+      return this.$store.state.tabIndex;
     },
   },
 };

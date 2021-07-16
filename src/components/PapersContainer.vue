@@ -136,7 +136,6 @@ export default {
         (res) => {
           currentMetaDate = res.data.meta;
           this.$store.commit("writeMetaData", currentMetaDate);
-          console.log(currentMetaDate);
         }
       );
 
@@ -162,12 +161,14 @@ export default {
         this.$store.commit("addTab", {
           url: res.data.address,
           title: row.Title,
+          PID: row.PID,
         });
       });
     },
     getIcon(type) {
       switch (type) {
         case "pdf":
+        case "blob":
           return pdfIcon;
         case "docx":
           return docxIcon;

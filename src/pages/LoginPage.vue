@@ -37,7 +37,7 @@ export default defineComponent({
 .login-page {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   width: 100%;
   position: absolute;

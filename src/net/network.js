@@ -139,12 +139,20 @@ export function downloadLatestPaper(data, callback) {
 }
 
 
-export function uploadPaper(data) {
+export function uploadPaper(data, callback) {
     const url = host + "paper/upload";
-    axios.post(url, {
-        'PaperID': data.paperID,
+
+    const bodyFormData = new FormData();
+    bodyFormData.append('PaperID', data.paperID);
+    bodyFormData.append('file', data.file);
+
+    axios({
+        method: "post",
+        url: url,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
     }).then(res => {
-        console.log(res);
+        callback(res);
     });
 }
 

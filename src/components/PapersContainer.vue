@@ -106,24 +106,21 @@ export default {
   data() {},
   methods: {
     deletePaper() {
-      deletePaper(
-        { paperID: this.$store.state.currentPID },
-        (res) => {
-          console.log(res.status);
-          this.$store.commit(
-            "setSelectedFolder",
-            this.$store.state.selectedFolder
-          );
-          ElMessage.success({
-            message: "删除成功",
-            type: "success",
-          });
-        }
-      );
+      deletePaper({ paperID: this.$store.state.currentPID }, (res) => {
+        console.log(res.status);
+        this.$store.commit(
+          "setSelectedFolder",
+          this.$store.state.selectedFolder
+        );
+        ElMessage.success({
+          message: "删除成功",
+          type: "success",
+        });
+      });
     },
     signalClickRow(row) {
-      this.$store.commit("changeChoosePaper", true );
-      this.$store.commit("changeCurrentPID",  row.PID );
+      this.$store.commit("changeChoosePaper", true);
+      this.$store.commit("changeCurrentPID", row.PID);
       let currentMetaDate = {};
       getMetaData(
         {
@@ -132,7 +129,7 @@ export default {
         (res) => {
           console.log(res);
           currentMetaDate = res.data.meta;
-          this.$store.commit("writeMetaData",currentMetaDate);
+          this.$store.commit("writeMetaData", currentMetaDate);
         }
       );
     },
@@ -155,12 +152,14 @@ export default {
         this.$store.commit("addTab", {
           url: res.data.address,
           title: row.Title,
+          PID: row.PID,
         });
       });
     },
     getIcon(type) {
       switch (type) {
         case "pdf":
+        case "blob":
           return pdfIcon;
         case "docx":
           return docxIcon;
